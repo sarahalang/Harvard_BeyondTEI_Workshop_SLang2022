@@ -107,15 +107,15 @@ There are rules on how elements can be named (you can look them up if relevant o
 \small
 
 \bg{w3schools}{white}{Prolog}~ \\
-\mycommand{<xml version="1.0" encoding="utf-8">}{XML deklaration}
-\mycommand{<?xsl-stylesheet type="text/xsl" href="mein.xsl"?>}{processing instructions  (optional)}
+\mycommand{<xml version="1.0" encoding="utf-8">}{XML declaration}
+\mycommand{<?xsl-stylesheet type="text/xsl" href="my.xsl"?>}{processing instructions  (optional)}
 \bigskip
 
 you can include document models (optional) \\
 DTD, XML Schema, RelaxNG, Schematron 
 \bigskip
 
-\bg{w3schools}{white}{entities}~ `protected' characters because they have a meta meaning in XML like: \\
+\bg{w3schools}{white}{entities}~ `protected' characters that have a meta meaning in XML like: \\
 \mycommand{&lt;}{<}
 \mycommand{&gt;}{>}
 \mycommand{&amp;}{\&}
@@ -135,7 +135,7 @@ DTD, XML Schema, RelaxNG, Schematron
 \bg{w3schools}{white}{XSL}~Extensible Stylesheet Language  \\
 \bg{w3schools}{white}{XSLT}~XSL-Transformations, i.e. transforming XML documents  \\
 \bg{w3schools}{white}{XSL-FO}~ formatted output (e.g. print) \\
-\bg{w3schools}{white}{XQuery}~query langauge for XML databases \\
+\bg{w3schools}{white}{XQuery}~query language for XML databases \\
 \bg{w3schools}{white}{and more}~
 \column{0.45\textwidth}
 \metroset{block=fill}
@@ -149,7 +149,7 @@ DTD, XML Schema, RelaxNG, Schematron
     \item \textbf{MEI} Music Encoding Initiative 
     \item \textbf{LIDO} Lightweight Information Describing Objects (describing museum or collection objects)
     \item \textbf{SVG} Scalable Vector Graphics 
-    \item \textbf{KML} Keyhole Markup Language (Geographie)
+    \item \textbf{KML} Keyhole Markup Language (geography)
     \item \textbf{MathML} 
     \item \textbf{CML} Chemical Markup Language, \dots
 \end{itemize}
@@ -242,7 +242,7 @@ XML-Standard, i.e. convention on how to use XML so that resulting data will be i
 
 \bg{alert}{white}{Attributes}~ 
 \begin{itemize}
-    \item \textbf{@n} (label) \item \textbf{@type} (typing) \item \textbf{xml:id} (unique identifier) \item \textbf{xml:lang} (language) \item \textbf{@rend} (rendering) \item \text{@ana} (interpretation)
+    \item \textbf{@n} (label) \item \textbf{@type} (typing) \item \textbf{xml:id} (unique identifier) \item \textbf{xml:lang} (language) \item \textbf{@rend} (rendering) \item \textbf{@ana} (interpretation)
 \end{itemize}
 \end{multicols}
 
@@ -265,7 +265,7 @@ XML-Standard, i.e. convention on how to use XML so that resulting data will be i
 
 \bg{alert}{white}{Name spaces}~ identified via URI 
 
-\bg{w3schools}{white}{<präfix:name>}~
+\bg{w3schools}{white}{<prefix:name>}~
 e.g. \texttt{<tei:p>} (`I mean the \texttt{<p>} according to the TEI standard.') \\
 
 \bg{alert}{white}{declaration}~ <element xmlns=“URI“> \dots \\
@@ -505,18 +505,18 @@ You might also need \texttt{<front>} (front matter): contains any prefatory matt
 
 
 %-----------------------------------------------------
-\begin{frame}{Making the TEI your own}
+\begin{frame}[allowframebreaks]{Making the TEI your own}
 \small
 \metroset{block=fill}
 
 \begin{columns}
-\column{0.6\textwidth}
+\column{0.5\textwidth}
     \begin{block}{How to find information on TEI elements}
     \dots and teach yourself how to use new elements:
-\begin{itemize}
+\begin{itemize}\footnotesize
     \item General TEI guidelines (\href{https://tei-c.org/release/doc/tei-p5-doc/en/html/SG.html}{XML Primer}, \href{https://tei-c.org/support/learn/}{Learn the TEI page}, etc.)
     \item web-search TEI + (element you want to know about), i.e. ``tei teiHeader'' and you will get:
-    \begin{enumerate}\footnotesize
+    \begin{enumerate}\scriptsize
         \item \href{https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-teiHeader.html}{definition page}
         \item \href{https://www.tei-c.org/release/doc/tei-p5-doc/en/html/examples-teiHeader.html}{list of all examples for that element} $\to$ directly over websearch or click `show all' in the examples on the `definitons page'
         \item sometimes even an \href{https://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html}{module overview text for things as big as \texttt{<teiHeader>}} (has its own module)
@@ -525,11 +525,10 @@ You might also need \texttt{<front>} (front matter): contains any prefatory matt
     \end{block}
 
 
-\column{0.35\textwidth}
+\column{0.45\textwidth}
 
-\begin{block}{}
-\footnotesize
-\begin{description}
+\begin{block}{Relevant TEI modules}
+\begin{description}\scriptsize
     \item[all] \href{https://tei-c.org/release/doc/tei-p5-doc/en/html/index.html}{All modules}
      \item[5] \href{https://tei-c.org/release/doc/tei-p5-doc/en/html/WD.html}{Characters, Glyphs, and Writing Modes}, 
      \item[10] \href{https://www.tei-c.org/release/doc/tei-p5-doc/en/html/MS.html}{Manuscript Description},
@@ -537,14 +536,19 @@ You might also need \texttt{<front>} (front matter): contains any prefatory matt
      \item[12] \href{https://tei-c.org/release/doc/tei-p5-doc/en/html/TC.html}{Critical Apparatus},
      \item[13] \href{https://tei-c.org/release/doc/tei-p5-doc/en/html/ND.html}{Names, Dates, People, and Places}.
 \end{description}
+\end{block}
 
+\begin{block}{}
+\footnotesize
 Also: The TEI guidelines are documentation and reference, not necessarily ideal teaching tools $\to$ overwhelming. Maybe try other tutorials like the \href{https://teibyexample.org/tutorials/TBED00v00.htm}{TEI by example page}, for example the tutorials on \alert{\href{https://teibyexample.org/tutorials/TBED06v00.htm}{Primary Sources}} and \alert{\href{https://teibyexample.org/tutorials/TBED07v00.htm}{Critical Editing}}.
 \end{block}
 
 \end{columns}
 
+\framebreak
+
 \begin{block}{Oxygen tricks}
-\begin{itemize}\normalsize
+\begin{itemize}\footnotesize
     \item If the TEI schema is linked to your document and you have internet, you can hover over elements and click to be redirected to the relevant info page. 
     \item If you open a tag (by just typing `\texttt{<}'), the editor will suggest a list of elements currently allowed where you're standing (for example, \texttt{<teiHeader>} is very picky about the sequence).
 \end{itemize}
