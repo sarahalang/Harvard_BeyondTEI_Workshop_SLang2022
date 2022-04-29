@@ -1,0 +1,381 @@
+
+\section{Navigating XML using XPath}
+
+\begin{frame}{Slowly moving beyond TEI\dots}
+    \metroset{block=fill}
+    Why are we doing this workshop? The motivation from our abstract:
+    \begin{itemize}
+        \item[\textcolor{w3schools}{\faCheck}] But what happens after an edition is encoded in TEI? 
+        \item[\textcolor{w3schools}{\faHandORight}] While it is an \textbf{ideal format for archiving digital data}, it is \alert{less than ideal for viewing and interacting with the edited text.}
+        \item[\textcolor{w3schools}{\faHandORight}] The data transformation language XSLT allows editors to create multiple representations from their data encoded in XML, enabling the creation of both digital and print editions. 
+    \end{itemize}
+    
+    \begin{block}{Goals for the next session}
+    \begin{enumerate}
+        \item[\textcolor{w3schools}{\faCheck}] understand the terms from the abstract
+        \item[\textcolor{w3schools}{\faCheck}] everybody on the same page on XML/TEI for digital editing
+        \item[\textcolor{w3schools}{\faCheck}] creating websites in HTML (\& Bootstrap)
+        \item[\textcolor{w3schools}{\faCheck}] creating PDFs \& print(able) editions using \LaTeX{} (\& \texttt{reledmac})
+        \item[\textcolor{alert}{\faClose}] \sout{creating different representations from our data} $\to$ first: navigating XML documents automatically using XPath
+    \end{enumerate}
+    \end{block}
+\end{frame}
+
+%-----------------------------------------------------
+
+\begin{frame}[fragile,allowframebreaks]{Introduction to XPath}
+\small\metroset{block=fill}
+XPath can be used to navigate in XML documents. \\
+\texttt{//persName} = `Give me all personal names / persons in the whole document.'  $\to$ all findings will be highlighted in Oxygen. I have thus `found' or `addressed' them. I can `select' them, for example to process them in XSLT.
+
+\begin{block}{}\small 
+Every occurence of Mina would result in the following once `translated' to XPath: 
+\begin{enumerate}\footnotesize
+    \item All \texttt{<persName>} which have \texttt{@ref='\#Mina'}, \emph{in the whole document}
+    \item all \texttt{<persName>} in the whole document: \texttt{//persName}.
+    \item \dots{} having \texttt{@ref='Mina'}: 
+    \begin{xmlcode}
+    //persName[@ref='#Mina']
+    \end{xmlcode}
+    \item Try it out! (Use the XPath field in Oxygen -- if you don't have any, look in the settings/preferences: Window $\to$ Tools: check `XPath'.)
+\end{enumerate}
+\end{block}
+
+\framebreak
+
+\begin{block}{How to find something using XPath:} 
+\begin{enumerate}\small
+    \item Formulate a normal English sentence expressing what you wish to achieve, e.g. `I want all occurrences of the person Mina.'
+    \item `Translate' this to the technical structure of the document: All those occurrences are encoded as \texttt{persName ref="\#Mina"} -- this gives me the means to address them. 
+    \item Do I want to get the element nodes themselves (for further processing) or just their text contents? Or the result of a function? (`Count all occurrences and give me their number.')?
+    \item Are there conditions? Do I want just some specific elements (a subset of the above) or everything that is found (`matched') by my request?
+\end{enumerate}
+\end{block}
+
+\end{frame}
+%-----------------------------------------------------
+
+\begin{frame}[fragile,allowframebreaks]{paths \& scope}
+\small 
+Depending on the query, I can search \emph{in the whole document} or \emph{in a certain scope}. To do that, I need to distinguish:
+
+\metroset{block=fill}
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{relative paths}\footnotesize
+Not every step in traversing the tree hierarchy of XML is listed but the query is run depending on the cursor's or programme's current location. Thus I need to know my current position. 
+
+This is useful because I only need to know about what's below that point in the tree (a limited scope). It's bad if I don't know where I am and get other results than expected. If you're not sure, prefer absolute paths!
+
+In XSLT, we will need relative paths.
+\end{block}
+\column{0.48\textwidth}
+
+\begin{block}{absolute paths}\footnotesize
+Every step in the hierarchy is stated explicitly. I only get the desired path (not accidentally matching something else).
+\begin{xmlcode}
+//titleStmt/title
+\end{xmlcode}
+$\to$ returns only the document title from the \texttt{<teiHeader>}, not other titles from bibliographical references.
+
+Gets more complicated if the result comes from different places (use `or' statements here: ||).
+\end{block}
+\end{columns}
+
+\framebreak 
+
+\begin{block}{scope}\footnotesize
+It's possible that I continue working with a subset of all nodes in XSLT, for example following a \texttt{<xsl:for-each>} loop. Here I have to use relative paths because I can't know at the time of writing the code where such elements will be found. 
+\smallskip
+
+A relative path can lead you to find unwanted things: maybe you get more or less than expected. Maybe you're not in the right place and the desired query doesn't yield any results in the current scope. 
+\end{block}
+
+
+\end{frame}
+
+
+%-----------------------------------------------------
+\begin{frame}[fragile,allowframebreaks]{So how does XPath work?}
+
+\metroset{block=fill}
+\begin{columns}
+\column{0.35\textwidth}
+\begin{block}{query result = set of nodes}\footnotesize
+A query returns a set of nodes. If you put a dot (\texttt{.}), you get just the text content of the current node.\smallskip
+
+\scriptsize
+\verb|matches(.,'([0-9]{4})')| Does `everything' (current node text content) contain a four letter number (i.e. data)? Answer: yes/no. 
+$\to$ no direct access to the contents found, just a yes/no answer is the result!\smallskip
+ 
+\verb|//*[matches(.,'([0-9]{4})')]| = `Give me any node in the whole document which contains (nothing but) a four digit numer/date' = returns a set of nodes to which the answer to the question in the brackets (XPath condition) is `yes' $=$ `true'. 
+\end{block}
+
+\column{0.63\textwidth}
+\begin{block}{Difference between strings \& nodes}\scriptsize
+Once XPath is in the substring, it only has characters (strings) left to access, not nodes/elements. Same is true for dot (\texttt{.}).
+
+Some functions return an answer, some make changes (like \texttt{translate()}). You might get the error \texttt{XPath failed due to: A sequence of more than one item is not allowed as the first argument of}. This is because some functions only allow one element or one char-litteral as input, example:
+
+\begin{xmlcode}
+contains(//t:origPlace/@ref, ‘pleiades’)
+\end{xmlcode}
+Tests results in error if there is more than one \texttt{<origPlace>} element in a document because many string operations only allow a char-literal or
+one element, not a set of nodes as input. The error can appear even when there actually is only one element where the node test is true (only one \texttt{@ref=’pleiades’}). Solution: 
+\begin{xmlcode}
+//t:origPlace/@ref[contains(., ‘pleiades’)]
+\end{xmlcode}
+
+Also, you can only `click into' (jump to) the results if it's a set of notes, not a string or yes/no answer.
+\end{block}
+\end{columns}
+
+\framebreak
+
+\begin{block}{predicates \lbrack{}\rbrack{} = conditions}\footnotesize
+Predicates are conditions and noted \lbrack{}in brackets\rbrack{}. You can query the result of a function there (yes/no) and thus, make queries like: Give me all personal names if/where XY is true. 
+\end{block}
+
+\begin{block}{functions}\footnotesize
+Functions can go into predicates but also around the whole expression $\to$ in the latter case, you usually get an `answer', not a set of nodes (which you probably wanted). Can result in the error explained on this slide. 
+(Kind of) Like a function in math, you get just value as an answer -- not a set of results.
+\begin{verbatim}
+    function(//location, parameter)
+\end{verbatim}
+\end{block}
+
+\small Unlike in normal search an replace, we can now query conditions:
+``Give me all occurrences of the person Mina but only in chapters where Dracula doesn't appear.''
+
+\framebreak
+
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{Absolute and relative paths}\footnotesize
+Try playing around with absolute and relative paths: To use a relative path, click into the \texttt{<titleStmt>} and search for just:
+\begin{xmlcode}
+title
+\end{xmlcode}
+
+Try all these options. Are there differences?
+\begin{xmlcode}
+title
+/TEI/teiHeader//title
+//titleStmt/title
+//title
+\end{xmlcode}
+The last option will give you all titles, so if there's more than just the document title in the header, you will get all of them. \texttt{//} always give you the global scope.
+\end{block}
+
+\column{0.48\textwidth}
+\begin{xmlcode}
+//person//surname
+//persName[@ref]
+//persName/@ref
+//persName[@ref="bla"]
+//persName[contains(.,'bla')]
+contains(.,'bla') = yes/no, no nodes
+\end{xmlcode}
+
+\begin{block}{Negating queries}\footnotesize
+Negate the query with \texttt{!=} OR \texttt{not}. Example:
+A \texttt{<persName>} which doesn't have an \texttt{@ref} attribute: 
+\begin{xmlcode}
+//persName[@ref]
+//persName[not(@ref)] 
+\end{xmlcode}
+
+All persons except Mina:
+\begin{xmlcode}
+//persname[@ref !='Mina'] 
+\end{xmlcode}
+\end{block}
+\end{columns}
+
+\end{frame}
+
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{Examples to get started}
+See exercise sheet. 
+
+\scriptsize
+\begin{verbatim}
+1. //div[@type="chapter"]   -- count(//head)
+2. //head -- //div[@type='chapter']/head
+3. substring-after(//div[type=....],'Chapter')
+4. distinct-values(//placeName/@xml:id)  
+  OR distinct-values(//placeName) 
+\end{verbatim}
+$\to$ What's the difference?
+\begin{verbatim}
+5. distinct-values(//persName[@ref="#Mina"]
+7. //p[contains(.,'Christmas')]  
+  OR //p[matches(.,[A-Z][a-z])]
+8. //div[@type="chapter"][@n="4"]/head  
+  OR  //div[@type="chapter"][4]/head
+9. //persName[@ref != "#Mina"]  
+  OR \\persname[not(@ref='#Mina')] 
+10. //div[@type='chapter'][1]/persName | //div[@type='chapter'][1]/placeName 
+OR //person | //place
+\end{verbatim}
+
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}[allowframebreaks]{XPath}
+\small
+\metroset{block=fill}
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{}
+XML document = \bg{w3schools}{white}{tree structure} $\to$ navigate via paths  
+\begin{itemize}
+\item root node (/) $\neq$ root element = child of the root node. 
+\item Additionally: attribute node, text node, element node, (+ namespace + comment + processing instructions) 
+\item Query = path, result = node set / value. 
+\item part of the XSL language family (XPath, XSLT, XSL-FO, \dots XQuery).
+\end{itemize}
+\end{block}
+
+\textbf{absolute} (\texttt{/person/name}) OR
+\textbf{relative} (\texttt{../../title}) 
+
+\column{0.48\textwidth}
+
+\begin{block}{}
+\bg{alert}{white}{Syntax}
+\begin{itemize}
+    \item \texttt{axis name::nodetest[predicate]} 
+    \item axis = direction of movement 
+    \item node test: which node? 
+    \item predicate: condition.
+\end{itemize}
+\end{block}
+
+\end{columns}
+
+\framebreak
+
+
+\mycommand{/child::person[attribute::gender]/child::name}{long}
+\mycommand{/person[@gender]/name}{shorthand}
+
+\bg{alert}{white}{axes}\\
+\mycommand{::self}{current node itself (shorthand: .)}
+\mycommand{::ancestor}{all ancestors of current node}
+\mycommand{attribute::}{attributes of current node (\textbf{shorthand: @})}
+\mycommand{child::}{direct children of current node}
+\mycommand{descendant::}{ancestors of current node (\textbf{shorthand: //})}
+\mycommand{parent::}{parent of current node (\textbf{shorthand: ../})}
+\mycommand{preceding-sibling::}{preceding siblings of current node}
+\mycommand{following-sibling::}{following siblings of current node}
+
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{Navigating XML}
+{\scriptsize More info in German: \href{https://www.i-d-e.de/?s=referenz}{IDE Kurzreferenzen}}\small 
+
+XPath expressions are evaluated in their context \sep absolute \& relative paths are possible (\emph{dynamic \& static context}\sep namespaces \sep functions, variables
+
+
+\bgupper{w3schools}{black}{XPath} \bg{alert}{white}{basics} \\
+\mycommand{/}{root node / one step further down the tree}
+\mycommand{::*}{::* = all types of elements irrespective of name}
+\mycommand{@}{attribute}
+\mycommand{[number]}{rank in result set}
+\mycommand{text()}{text content of element}
+\mycommand{::elementtype}{condition for element type (node test)}
+\mycommand{//}{at any depth}
+\mycommand{[text() = 'text content']}{condition (predicate)}
+\mycommand{.}{self}
+\mycommand{(/../}{jump one hierarchical level regardless of name}
+\mycommand{path//subpath}{arbitrary depth}
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{XPath predicates}
+\bg{alert}{white}{Conditions which define subsets = predicates}
+\begin{verbatim}
+//person[@gender="female"]
+//person[firstname = "Stefan"]
+//person[firstname != "Tanja"]
+//person[1]
+//person[last()]/firstname
+//person[position() = 2]
+/participants/person[position()=5]/firstname
+/participants/person[last()]/firstname
+count(child::*)
+\end{verbatim}
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{XPath functions}
+
+\bg{alert}{white}{functions -- set of nodes} \\
+\mycommand{position()}{position of current node, return: number}
+\mycommand{count()}{number of nodes in given node set}
+\mycommand{last()}{last node in selected node set}
+
+\bg{alert}{white}{string functions}\\
+\mycommand{substring-before(value, substring)}{substring of
+text node (\emph{value}) coming before the indicated \emph{substring}}
+\mycommand{substring-before(., 'mina')}{e.g.}
+\mycommand{substring-after(value, substring)}{like before}
+\mycommand{substring(value, start, length)}{with start pos \& length}
+\mycommand{string-length(.)}{length of current text node}
+\mycommand{concat(value1, value2, ...)}{concatenate}
+\mycommand{concat(surname, ', ', forename)}{e.g.}
+\mycommand{translate(target, string, replacement)}{replace}
+\mycommand{noramlize-space(target)}{removes trailing whitespace}
+
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{XPath functions}
+\bg{alert}{white}{Boolean functions}\\
+\mycommand{starts-with(value, substring)}{return: true/false}
+\mycommand{starts-with(., 'D')}{true/false}
+\mycommand{contains(value, substring)}{if the current text node contains the string, returns yes}
+\mycommand{not(comparison)}{returns yes if not XY}
+
+\bg{alert}{white}{Functions with regex support}\\
+\mycommand{matches(target, 'RegEx')}{like \texttt{contains()} but only exact matches}
+\mycommand{replace()}{like \texttt{translate()} but supports regex}
+\mycommand{tokenize()}{tokenize text into single words}
+
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}[fragile,allowframebreaks]{Troubleshooting}
+\metroset{block=fill} \footnotesize
+\begin{enumerate}
+    \item \textbf{\lbrack{}Nothing works\rbrack} In case of doubt it's always the namespace! Or you're somewhere other than you expected (using relative paths) $\to$ try an absolute path!
+    \item \textbf{\lbrack{}Nothing found\rbrack} XML is \textbf{hierarchical}! Am I in the right spot? Can I reach the degree of \textbf{depth} that I wanted? In doubt, include \verb|/../| to be more independent of hierarchy.
+    \item \textbf{\lbrack{}Not found enough?\rbrack} \textbf{Jumps in path depth:} A path (without \texttt{path//subpath}) in between will not jump any levels, only go one step deeper! Are there in-between layers you forgot? Like another nested \texttt{<div>}? Try putting \texttt{//} but then, depth is completely arbitrary (maybe also not the wanted outcome) -- if you want a particular depth, like 3, try \texttt{/../../../}.
+    \item \textbf{\lbrack{}Path works but doesn't do what I wanted\rbrack} 
+    Formulate your query as precise as possible. Do I find all I want? Does my query match more than I wanted? 
+    \item XSL's standard processing behaviour causes text content to be printed as is unless it's explicitly changed or suppressed. 
+\end{enumerate}
+
+\begin{block}{Preparing XSL transformations}\footnotesize
+First query all elements used in your file (once each using the \texttt{distinct-values()} function) to be sure that you have everything covered or learn what you need to write template rules for.\medskip
+
+\mycommand{distinct-values(//@*/name())}{What types of attributes are there?}
+\mycommand{distinct-values(//@*)}{What attribute values are in my document?}
+\mycommand{distinct-values(//@rend)}{What values does \texttt{@rend} take?}
+\mycommand{distinct-values(//name())}{What elements are there?}
+\end{block}
+\end{frame}
+
+%-----------------------------------------------------
+
+
+%------------------------------------------------------------------------------
+\begin{frame}[standout]
+    \alert{XPath practice!} \\
+    \normalsize
+    Start working on the XPath/XSLT exercise sheet (resources/materials folder); XPath 1.1 \& 1.2. It has lots of explanations. Feel free to use the slides and cheatsheet for help. Read the info on the worksheet!
+\end{frame}
+

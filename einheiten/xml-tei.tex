@@ -1,0 +1,558 @@
+
+
+\section{Annotating with XML markup}
+
+\begin{frame}{TEI, now what?}
+\metroset{block=fill}
+    Why are we doing this workshop? The motivation from our abstract:
+    \begin{itemize}
+        \item \punkti the Text Encoding Initiative (TEI) for XML has become the gold standard for scholarly editions of texts.
+        \item \dots
+    \end{itemize}
+    
+    \begin{block}{Goals for the next session}
+    \begin{enumerate}
+        \item wait, what was\dots
+        \begin{itemize}
+            \item[\textcolor{alert}{\faClose}] XML?
+            \item[\textcolor{alert}{\faClose}] TEI?
+            \item[\textcolor{alert}{\faClose}] How do I use the TEI for digital editing?
+        \end{itemize}
+    \end{enumerate}
+
+    \end{block}
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}{XML: eXtensible Markup Language}
+\begin{columns}
+\column{0.35\textwidth}
+\begin{itemize}\small 
+    \item \href{https://www.w3schools.com/xml/default.asp}{W3Schools Tutorial} 
+    \item {paradigm of the separation of form and content} 
+    \item {XML is a metalanguage}
+\end{itemize}
+\bgupper{w3schools}{black}{.xml} \\
+
+\begin{itemize}\scriptsize 
+    \item {RSS}, SOAP, XAML 
+    \item {MathML}, {GraphML}~ 
+    \item {XHTML}~
+    \item {RDF}~
+    \item {KML}~ 
+    \item {Scalable Vector Graphics (SVG)}
+\end{itemize}
+
+\column{0.65\textwidth}
+\metroset{block=fill}
+\begin{block}{}
+\begin{quote}
+    \textbf{Extensible Markup Language (XML)} is a \textbf{markup language} and file format for storing, transmitting, and reconstructing arbitrary data. It defines a \textbf{set of rules for encoding documents} in a format that is \textbf{both human-readable and machine-readable.}  (\href{https://en.wikipedia.org/wiki/XML}{Wikipedia})
+\end{quote}
+\end{block}
+\end{columns}
+
+\end{frame}
+
+
+%----------------------------------
+
+\begin{frame}[fragile]{XML rules}
+\begin{columns}
+\column{0.42\textwidth}
+\small
+XML can be checked for \textbf{validity} (validation if it complies with a standard) and \textbf{well-formedness} (following the rules of XML) $\to$ will only be parsed if well-formed. Thus: \alert{Heed thy error messages!}\smallskip
+
+There are rules on how elements can be named (you can look them up if relevant or will get informed by an error message). 
+
+\bigskip
+
+%\includegraphics[width=0.1\textwidth]{doppelkeks.jpg}~\bg{alert}{white}{Doppelkeks} ~ ~\bg{alert}{white}{russische Puppe}~\includegraphics[width=0.15\textwidth]{matroschka.jpg}\vspace{1em}
+
+\mycommand{<key>value</key>}{XML as a key value notation} 
+\column{0.55\textwidth}\footnotesize
+\metroset{block=fill}
+\begin{block}{Rules}
+\begin{itemize}
+    \item Hierarchical nesting below the root
+    \item exactly one root element, i.e. one out-most russion doll
+    \item start and end tag 
+    \item tag names are case-sensitive (!) 
+    \item empty elements allowed (\& can be shortened) 
+\end{itemize}
+\end{block}
+\bigskip 
+
+\begin{block}{Minimal example}
+\begin{xmlcode}
+<?xml version="1.0" ?>
+<root>
+  <element attribute="value">
+    content
+  </element>
+  <!-- comment -->
+</root>
+\end{xmlcode}
+\end{block}
+\end{columns}
+
+\end{frame}
+
+
+%----------------------------------
+
+
+\begin{frame}[fragile,allowframebreaks]{XML rules}
+
+\small
+
+\bg{w3schools}{white}{Prolog}~ \\
+\mycommand{<xml version="1.0" encoding="utf-8">}{XML deklaration}
+\mycommand{<?xsl-stylesheet type="text/xsl" href="mein.xsl"?>}{processing instructions  (optional)}
+\bigskip
+
+you can include document models (optional) \\
+DTD, XML Schema, RelaxNG, Schematron 
+\bigskip
+
+\bg{w3schools}{white}{entities}~ `protected' characters because they have a meta meaning in XML like: \\
+\mycommand{&lt;}{<}
+\mycommand{&gt;}{>}
+\mycommand{&amp;}{\&}
+
+
+\end{frame}
+
+
+%-----------------
+\begin{frame}{XML family and vocabularies}
+\begin{columns}
+\column{0.45\textwidth}
+\footnotesize
+\bg{w3schools}{white}{XML}~structured description of data \\
+\bg{w3schools}{white}{XPath}~navigating xml documents \\
+\bg{w3schools}{white}{XML Schema}~strict data model \\
+\bg{w3schools}{white}{XSL}~Extensible Stylesheet Language  \\
+\bg{w3schools}{white}{XSLT}~XSL-Transformations, i.e. transforming XML documents  \\
+\bg{w3schools}{white}{XSL-FO}~ formatted output (e.g. print) \\
+\bg{w3schools}{white}{XQuery}~query langauge for XML databases \\
+\bg{w3schools}{white}{and more}~
+\column{0.45\textwidth}
+\metroset{block=fill}
+\begin{block}{}
+\footnotesize
+\begin{itemize}
+    \item \textbf{(X)HTML} Hypertext Markup Language 
+    \item \textbf{EAD} Encoded Archival Description 
+    \item \textbf{TEI} Text Encoding Initiative 
+    \item \textbf{CEI} Charters Encoding Initiative 
+    \item \textbf{MEI} Music Encoding Initiative 
+    \item \textbf{LIDO} Lightweight Information Describing Objects (describing museum or collection objects)
+    \item \textbf{SVG} Scalable Vector Graphics 
+    \item \textbf{KML} Keyhole Markup Language (Geographie)
+    \item \textbf{MathML} 
+    \item \textbf{CML} Chemical Markup Language, \dots
+\end{itemize}
+\end{block}
+\end{columns}
+
+
+\end{frame}
+
+
+
+
+\section{Text Encoding Initiative}
+%-----------------------------------------------------
+\begin{frame}[fragile]{TEI Primer}
+\footnotesize\metroset{block=fill}
+
+\begin{columns}
+\column{0.48\textwidth}
+\bg{alert}{white}{Text Encoding Initiative}\\
+\bgupper{w3schools}{black}{.xml}\\
+XML-Standard, i.e. convention on how to use XML so that resulting data will be interoperable between different projects.
+
+(founded in 1987, consortium since 2000)
+
+\begin{block}{}
+\begin{quote}
+    The Text Encoding Initiative (TEI) is a text-centric community of practice in the academic field of digital humanities, operating continuously since the 1980s. The community currently runs a mailing list, meetings and conference series, and maintains the TEI technical standard, a journal, a wiki, a GitHub repository and a toolchain. (\href{https://en.wikipedia.org/wiki/Text_Encoding_Initiative}{Wikipedia})
+\end{quote}
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{TEI minimal example}
+\begin{xmlcode}
+<TEI> <!-- root element -->
+    <teiHeader> 
+      <!-- author, title, dating, 
+           sources, edition rules, etc. -->
+    </teiHeader> 
+    <text> ... </text>
+</TEI>
+\end{xmlcode}
+\end{block}
+
+\begin{block}{Resources}
+    \begin{itemize}\scriptsize
+        \item \href{http://www.tei-c.org/Support/Learn/}{Learn TEI} 
+        \item \href{http://www.tei-c.org/support/learn/teach-yourself-tei/}{Teach Yourself} \item P5 = 5. Proposal 
+        \item MEI for music 
+        \item CEI for charters 
+        \item \href{http://www.tei-c.org/}{http://www.tei-c.org/} 
+    \end{itemize}
+\end{block}
+\end{columns}
+
+\end{frame}
+
+%-------------------------------------
+\begin{frame}[fragile]{TEI Header}
+\footnotesize
+\bg{alert}{white}{fileDesc}~ = bibliographical description of the contents of the document  \\
+\bg{alert}{white}{encodingDesc}~ = connection of electronic document to source (i.e. transcription rules, etc.)  \\
+
+\begin{xmlcode}
+<TEI> <!-- root element -->
+    <teiHeader>
+        <fileDesc> ... </fileDesc> <!-- obligatory --> 
+        <encodingDesc> <!-- optional -->
+        <profileDesc> <!-- optional -->
+        <revisionDesc> <!-- optional -->
+    </teiHeader> 
+    <text> ... </text>
+</TEI>
+\end{xmlcode}
+
+\bg{alert}{white}{profileDesc}~ = decribes all non-bibliogaphical aspects of the text (i.e. creation, languages) \\
+\bg{alert}{white}{revisionDesc}~ = tracks changes in the digital document 
+\end{frame}
+
+%-----------------------------------
+\begin{frame}[fragile,allowframebreaks]{Using TEI}
+\footnotesize
+\href{http://www.tei-c.org/release/doc/tei-p5-doc/en/html/SG.html}{Gentle Intro to XML}
+
+\begin{multicols}{2}
+\bg{alert}{white}{TEI Core}~ 
+\begin{itemize}
+    \item \textbf{div} (division) \item \textbf{p} (paragraph) \item \textbf{head} (heading) \item \textbf{lb} (linebreak) \item \textbf{pb} (page break / beginning) \item \textbf{hi} (highlight) \item \textbf{l} (line) \item \textbf{lg} (line group) \item \textbf{list} \item \textbf{item} \item \textbf{listBibl} \item \textbf{bibl} (bibliographical information)
+\end{itemize}
+
+\bg{alert}{white}{Attributes}~ 
+\begin{itemize}
+    \item \textbf{@n} (label) \item \textbf{@type} (typing) \item \textbf{xml:id} (unique identifier) \item \textbf{xml:lang} (language) \item \textbf{@rend} (rendering) \item \text{@ana} (interpretation)
+\end{itemize}
+\end{multicols}
+
+\begin{xmlcode}
+<foreign xml:lang="en">word</foreign>
+<term type="homonym"/>
+<date when="2009-04-27"/>
+<time when="12:00:00"/>
+<name type="person"/>
+<persName n="Caesar" xml:id="#44BC">Caesaris</persName> 
+<!-- or -->
+<persName key="ID.01.208"/>
+<person/>
+<emph/> <hi rend="italic">italic text</hi>
+<seg/> <abbr type="acronym"/>
+<placeName xml:id="#Whitby">Abbey</placeName>
+\end{xmlcode}
+
+\framebreak
+
+\bg{alert}{white}{Name spaces}~ identified via URI 
+
+\bg{w3schools}{white}{<präfix:name>}~
+e.g. \texttt{<tei:p>} (`I mean the \texttt{<p>} according to the TEI standard.') \\
+
+\bg{alert}{white}{declaration}~ <element xmlns=“URI“> \dots \\
+<prefix:element xmlns:prefix=“URI“> \dots \\
+e.g. 
+\begin{xmlcode}
+<tei:p xmlns:tei=“http://www.tei-c.org/ns/1.0“>...
+\end{xmlcode}
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{TEI is organized in modules}
+\footnotesize
+Acts of speech (\href{http://www.tei-c.org/release/doc/tei-p5-doc/en/html/examples-sp.html}{reference}) if speaker name is mentioned, otherwise  \href{http://www.tei-c.org/release/doc/tei-p5-doc/en/html/examples-said.html}{TEIs `said'}:
+\begin{xmlcode}
+<sp who="#person">
+    <speaker>1.</speaker> <p>Bla, bla, bla.</p>
+</sp>
+
+<said who="#Adolphe">- Alors, Albert, quoi de neuf?</said>
+\end{xmlcode}
+
+Letters in TEI \href{http://www.tei-c.org/release/doc/tei-p5-doc/en/html/DS.html#DSOC}{(reference)}
+
+\begin{xmlcode}
+<div type="letter" n="14">
+    <head>Letter XIV: Miss Clarissa Harlowe to Miss Howe</head>
+        <opener>
+            <dateline>Thursday evening, March 2.</dateline>
+            <salute>Hallo,</salute>
+        </opener>
+    <p>On Hannah's depositing my long letter ...</p>
+    <closer>
+        <salute>Yours more than my own,</salute>
+        <signed>Clarissa Harlowe</signed>
+    </closer>
+</div>
+\end{xmlcode}
+\end{frame}
+
+%--------------------------------
+\begin{frame}[fragile]{Names, Dates, Places}
+\footnotesize
+\bg{w3schools}{white}{\emph{Named Entities} \& Indirekte reference}\\
+\href{http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ND.html}{TEI 13: Names, Dates, People, Places} 
+
+\metroset{block=fill}
+\begin{columns}
+\column{0.4\textwidth}
+\begin{itemize}
+    \item \textbf{persName} for personal names, \textbf{<rs>} for \emph{referring string} when mentioned indirectly (`he', `the woman', etc.) $\to $\textbf{@key} or \textbf{@ref} to specify who it is  (\href{http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#CONARS}{reference}). \item \textbf{forename} 
+    \item \textbf{surname} 
+    \item \textbf{roleName} (z.B. `king') 
+    \item  \textbf{genName} (`the Younger') 
+    \item \textbf{addName} 
+    \item \textbf{nameLink} (`von').
+\end{itemize}
+
+\column{0.58\textwidth}
+\begin{xmlcode}
+<name role="writer" type="person"
+ref="http://d-nb.info/gnd/118540238">
+Goethe</name>
+<person>
+  <addName type="Former">Murray</addName>
+  <forename>Wilhelmina</forename>
+  <addName type="nickname">Mina</addName>
+</person>
+\end{xmlcode}
+\end{columns}
+
+\end{frame}
+
+
+
+
+%-----------------------------------------------------
+\begin{frame}[fragile,allowframebreaks]{Metadata in the TEI Header}
+\subsection{teiHeader, msDesc, sourceDesc, titlePage}
+\small
+
+\begin{xmlcode}
+<teiHeader>
+ <fileDesc>
+  <titleStmt>
+   <title>
+<!-- title of the resource -->
+   </title>
+  </titleStmt>
+  <publicationStmt>
+   <p>
+<!-- Information about distribution of the resource -->
+   </p>
+  </publicationStmt>
+  <sourceDesc>
+   <p>
+<!-- Information about source from which the resource derives -->
+   </p>
+  </sourceDesc>
+ </fileDesc>
+</teiHeader>
+\end{xmlcode}
+
+
+The title and author in the \texttt{<titleStmt>} isn't the bibliographic data from the source! It describes the digital document and its authors or editors.
+
+If you want to desribe your source documents, you need elements like \texttt{<sourceDesc>} or \texttt{<msDesc>}:
+\begin{xmlcode}
+<sourceDesc>
+ <bibl>
+  <title level="a">The Interesting story of the Children in the Wood</title>. In
+ <author>Victor E Neuberg</author>, <title>The Penny Histories</title>.
+ <publisher>OUP</publisher>
+  <date>1968</date>. </bibl>
+</sourceDesc>
+\end{xmlcode}
+
+\begin{xmlcode}
+<sourceDesc>
+ <p>Born digital: no previous source exists.</p>
+</sourceDesc>
+\end{xmlcode}
+
+\begin{xmlcode}
+<teiHeader>
+ <fileDesc>
+  <titleStmt>
+   <title>Thomas Paine: Common sense, a
+       machine-readable transcript</title>
+   <respStmt>
+    <resp>compiled by</resp>
+    <name>Jon K Adams</name>
+   </respStmt>
+  </titleStmt>
+  <publicationStmt>
+   <distributor>Oxford Text Archive</distributor>
+  </publicationStmt>
+  <sourceDesc>
+   <bibl>The complete writings of Thomas Paine, collected and edited
+       by Phillip S. Foner (New York, Citadel Press, 1945)</bibl>
+  </sourceDesc>
+ </fileDesc>
+</teiHeader>
+\end{xmlcode}
+
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{\texttt{<msDesc>}}
+
+\begin{xmlcode}
+<msDesc>
+ <msIdentifier>
+  <settlement>Oxford</settlement>
+  <repository>Bodleian Library</repository>
+  <idno type="Bod">MS Poet. Rawl. D. 169.</idno>
+ </msIdentifier>
+ <msContents>
+  <msItem>
+   <author>Geoffrey Chaucer</author>
+   <title>The Canterbury Tales</title>
+  </msItem>
+ </msContents>
+ <physDesc>
+  <objectDesc>
+   <p>A parchment codex of 136 folios, measuring approx
+       28 by 19 inches, and containing 24 quires.</p>
+   <p>The pages are margined and ruled throughout.</p>
+   <p>Four hands have been identified in the manuscript: the first 44
+       folios being written in two cursive anglicana scripts, while the
+       remainder is for the most part in a mixed secretary hand.</p>
+  </objectDesc>
+ </physDesc>
+</msDesc>
+\end{xmlcode}
+
+$\to$ Use websearch (`tei msDesc') to learn how to use new elements (\href{https://tei-c.org/release/doc/tei-p5-doc/en/html/ref-msDesc.html}{overview} and find \href{https://tei-c.org/release/doc/tei-p5-doc/en/html/examples-msDesc.html}{examples like this}).
+
+\end{frame}
+
+
+
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{\texttt{<titlePage>}}
+
+To describe a title page (e.g. early modern print copperplates, etc.), use \texttt{<titlePage>}:
+\begin{xmlcode}
+<titlePage>
+ <docTitle>
+  <titlePart type="main">THOMAS OF Reading.</titlePart>
+  <titlePart type="alt">OR, The sixe worthy yeomen of the West.</titlePart>
+ </docTitle>
+ <docEdition>Now the fourth time corrected and enlarged</docEdition>
+ <byline>By T.D.</byline>
+ <figure>
+  <head>TP</head>
+  <p>Thou shalt labor till thou returne to duste</p>
+  <figDesc>Printers Ornament used by TP</figDesc>
+ </figure>
+ <docImprint>Printed at <name type="place">London</name> for <name>T.P.</name>
+  <date>1612.</date>
+ </docImprint>
+</titlePage>
+\end{xmlcode}
+
+\end{frame}
+
+
+
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{\texttt{<front>}}
+
+You might also need \texttt{<front>} (front matter): contains any prefatory matter (headers, abstracts, title page, prefaces, dedications, etc.) found at the start of a document, before the main body. 
+
+\begin{xmlcode}
+<front>
+ <epigraph>
+  <quote>Nam Sibyllam quidem Cumis ego ipse oculis meis vidi in ampulla
+     pendere, et cum illi pueri dicerent: <q xml:lang="grc">Σίβυλλα τί
+       θέλεις</q>; respondebat illa: <q xml:lang="grc">ὰποθανεῖν θέλω.</q>
+  </quote>
+ </epigraph>
+ <div type="dedication">
+  <p>For Ezra Pound <q xml:lang="it">il miglior fabbro.</q>
+  </p>
+ </div>
+</front>
+\end{xmlcode}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}[standout]
+    \alert{TEI practice!} \\
+    \begin{enumerate}\small
+        \item Fill out the \texttt{teiHeader} or \texttt{msDesc}.
+        \item Use websearch (`tei msDesc') to learn how to use new elements (\href{https://tei-c.org/release/doc/tei-p5-doc/en/html/ref-msDesc.html}{overview} plus \href{https://tei-c.org/release/doc/tei-p5-doc/en/html/examples-msDesc.html}{examples view}).
+    \end{enumerate} 
+\end{frame}
+
+
+
+
+%-----------------------------------------------------
+\begin{frame}{Making the TEI your own}
+\small
+\metroset{block=fill}
+\begin{columns}
+\column{0.6\textwidth}
+    \begin{block}{How to find information on TEI elements and teach yourself how to use new elements}
+\begin{itemize}
+    \item General TEI guidelines (\href{https://tei-c.org/release/doc/tei-p5-doc/en/html/SG.html}{XML Primer}, \href{https://tei-c.org/support/learn/}{Learn the TEI page}, etc.)
+    \item web-search TEI + (element you want to know about), i.e. ``tei teiHeader'' and you will get:
+    \begin{enumerate}\footnotesize
+        \item \href{https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-teiHeader.html}{definition page}
+        \item \href{https://www.tei-c.org/release/doc/tei-p5-doc/en/html/examples-teiHeader.html}{list of all examples for that element} $\to$ directly over websearch or click `show all' in the examples on the `definitons page'
+        \item sometimes even an \href{https://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html}{module overview text for things as big as \texttt{<teiHeader>}} (has its own module)
+    \end{enumerate}
+\end{itemize}
+    \end{block}
+
+\column{0.35\textwidth}
+\begin{block}{\href{https://tei-c.org/release/doc/tei-p5-doc/en/html/index.html}{\textbf{Relevant modules:}}}\footnotesize
+\begin{description}
+     \item[5] \href{https://tei-c.org/release/doc/tei-p5-doc/en/html/WD.html}{Characters, Glyphs, and Writing Modes}, 
+     \item[10] \href{https://www.tei-c.org/release/doc/tei-p5-doc/en/html/MS.html}{Manuscript Description},
+     \item[11] \href{https://tei-c.org/release/doc/tei-p5-doc/en/html/PH.html}{Representation of Primary Sources},
+     \item[12] \href{https://tei-c.org/release/doc/tei-p5-doc/en/html/TC.html}{Critical Apparatus},
+     \item[13] \href{https://tei-c.org/release/doc/tei-p5-doc/en/html/ND.html}{Names, Dates, People, and Places}.
+\end{description}
+
+Also: The TEI guidelines are documentation and reference, not necessarily ideal teaching tools $\to$ overwhelming. Maybe try other tutorials like the \href{TEI by example page}{https://teibyexample.org/tutorials/TBED00v00.htm}, for example the tutorials on \href{https://teibyexample.org/tutorials/TBED06v00.htm}{\alert{Primary Sources}} and \href{https://teibyexample.org/tutorials/TBED07v00.htm}{\alert{Critical Editing}}.
+\end{block}
+\end{columns}
+
+
+\begin{block}{Oxygen tricks}
+\begin{itemize}\normalsize
+    \item If the TEI schema is linked to your document and you have internet, you can hover over elements and click to be redirected to the relevant info page. 
+    \item If you open a tag (by just typing `\texttt{<}'), the editor will suggest a list of elements currently allowed where you're standing (for example, \texttt{<teiHeader>} is very picky about the sequence).
+\end{itemize}
+\end{block}
+
+\end{frame}
+

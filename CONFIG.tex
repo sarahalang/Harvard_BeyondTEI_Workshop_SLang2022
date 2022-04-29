@@ -1,0 +1,297 @@
+
+\usepackage[T1]{fontenc}
+\usepackage{FiraSans} 
+
+
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+  \usetheme[progressbar=foot,numbering=fraction,background=light]{metropolis}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+  %\setbeamertemplate{frame footer}{My custom footer}
+} 
+
+\usepackage[ngerman,english]{babel}
+\usepackage{csquotes}
+\usepackage[utf8x]{inputenc}
+
+
+%--------------------------Editor mode.
+
+\usepackage
+[citestyle=authoryear,
+%style=historian, 		%Loads the Historian files
+sorting=nty,	  		%Sorts bibliography by year, name, title
+autocite=footnote, 		%Autocite command generates footnotes
+autolang=hyphen, 			%Allows hyphenation rules for foreign languages to apply to individual entries.						%(The other language rules should all be American)
+mincrossrefs=1, 		%Includes all x-ref’ed entries in the bibliography
+%usetranslator=true, 	%Translator’s name may be substituted for						%author or editor, if the latter are blank
+%printseries, 			%Options provided by Historian, see below
+backend=biber]
+{biblatex}
+
+\DeclareFieldFormat{postnote}{#1}
+\DeclareFieldFormat{multipostnote}{#1}
+\DeclareAutoCiteCommand{footnote}[f]{\footcite}{\footcites}
+
+\bibliography{literature}
+%----------------------------------------
+
+%--------------------------Editor mode.
+
+
+%\usepackage[default]{raleway}
+\usepackage{fontawesome}
+
+
+\usepackage{hyperref}
+%\usepackage{enumitem} % produces fatal error with this template
+%\setlist[itemize]{leftmargin=*} % belongs to enumitem
+
+\usepackage{xcolor}
+\definecolor{customcolor}{HTML}{616AC5}
+\definecolor{alert}{HTML}{CD5C5C}
+\definecolor{w3schools}{HTML}{4CAF50}
+\definecolor{subbox}{gray}{0.60}
+\definecolor{codecolor}{HTML}{FFC300}
+
+
+
+ 
+%Information to be included in the title page:
+\title[Beyond TEI] %optional
+{\vspace{0.5cm} Beyond TEI}
+\subtitle{Digital Editions with XPath \& XSLT for the Web \& in \LaTeX{}}
+\institute{\raggedleft \includegraphics[height=1cm]{img/ninja-2000.png}\hspace{0.5cm}\includegraphics[height=1cm]{img/harvard-logo.png} }
+\author[SL]{\raggedleft Sarah Lang}
+\date[20220429] % (optional)
+{\raggedleft Harvard, April/May 2022}
+
+\logo{%\includegraphics[height=1cm]{unipassau.png}
+%\includegraphics[height=1cm]{univie-logo.png}
+%\includegraphics[height=2cm]{zim.png}
+}
+
+
+
+\newcommand{\punkti}{~\lbrack\dots\rbrack~}
+
+\renewenvironment{quote}
+               {\list{\faQuoteLeft\phantom{ }}{\rightmargin\leftmargin}%
+                \item\relax\footnotesize\ignorespaces}
+               {\unskip\unskip\phantom{xx}\faQuoteRight\endlist}
+
+\newcommand{\bgupper}[3]{\colorbox{#1}{\color{#2}\huge\bfseries\MakeUppercase{#3}}}
+\newcommand{\bg}[3]{\colorbox{#1}{\bfseries\color{#2}#3}}
+
+\newcommand{\mycommand}[2]{{\ttfamily\detokenize{#1}}~\dotfill{}~{\footnotesize #2}\\}
+
+\newcommand{\sep}{{\scriptsize~\faCircle{ }~}}
+
+\newcommand{\red}[1]{\bg{alert}{white}{#1}\\}
+\newcommand{\green}[1]{\bg{w3schools}{white}{#1}\\}
+
+
+
+
+%----------------------------------------------------------------------------------------------------------------
+
+
+\usepackage{xcolor}
+\definecolor{customcolor}{HTML}{616AC5}
+\definecolor{alert}{HTML}{CD5C5C}
+\definecolor{w3schools}{HTML}{4CAF50}
+\definecolor{subbox}{gray}{0.60}
+\definecolor{codecolor}{HTML}{FFC300}
+
+
+%--------------------------------------------------------------------------------
+\usepackage{tcolorbox}
+
+\tcbuselibrary{most,listingsutf8,minted}
+
+\tcbset{tcbox width=auto,left=1mm,top=1mm,bottom=1mm,
+right=1mm,boxsep=1mm,middle=1pt}
+
+\newenvironment{mycolorbox}[2]{%
+\begin{tcolorbox}[grow to left by=-1em,grow to right by=-1em,capture=minipage,fonttitle=\large\bfseries, enhanced jigsaw,boxsep=1mm,colback=#1!30!white,on line,tcbox width=auto, toptitle=0mm,colframe=#1,opacityback=0.7,nobeforeafter,title=#2]\scriptsize%
+}{\end{tcolorbox}\\[0.2em]}
+
+\newenvironment{subbox}[2]{%
+\begin{tcolorbox}[capture=minipage,fonttitle=\normalsize\bfseries, enhanced jigsaw,boxsep=1mm,colback=#1!30!white,on line,tcbox width=auto,left=0.3em,top=1mm, toptitle=0mm,colframe=#1,opacityback=0.7,nobeforeafter,title=#2]\scriptsize %
+}{\normalsize\end{tcolorbox}\vspace{0.1em}}
+
+\newenvironment{multibox}[1]{%
+\begin{tcbraster}[raster columns=#1,raster equal height,nobeforeafter,raster column skip=1em,raster left skip=1em,raster right skip=1em]}{\end{tcbraster}}
+
+
+\newenvironment{mycodebox}[2]{%
+\begin{tcolorbox}[grow to left by=-1em,grow to right by=-1em,capture=minipage,fonttitle=\large\bfseries, enhanced jigsaw,boxsep=1mm,colback=#1!30!white,on line,tcbox width=auto, toptitle=0mm,colframe=#1,opacityback=0.7,nobeforeafter,title=#2]%
+}{\end{tcolorbox}\\[0.2em]}
+
+\newtcolorbox{mybox}[2][]{colback=codecolor!10!white,coltitle=red!70!black,
+title={#2},fonttitle=\bfseries,#1}
+
+
+%-------------------------------
+
+\newtcblisting{mypy}[1]{colback=codecolor!5,colframe=codecolor!80!black,listing only, 
+minted options={numbers=left, style=tcblatex,fontsize=\scriptsize,breaklines,autogobble,linenos,numbersep=3mm},
+left=5mm,enhanced,
+title=#1, fonttitle=\bfseries,
+listing engine=minted,minted language=python}
+
+\newtcblisting{myxml}[1]{colback=codecolor!5,colframe=codecolor!80!black,listing only, 
+minted options={numbers=left, style=tcblatex,fontsize=\tiny,breaklines,autogobble,linenos,numbersep=3mm},
+left=5mm,enhanced,
+title=#1, fonttitle=\bfseries,
+listing engine=minted,minted language=xml}
+
+\newtcblisting{mybiggerxml}[1]{colback=codecolor!5,colframe=codecolor!80!black,listing only, 
+minted options={numbers=left, style=tcblatex,fontsize=\footnotesize,breaklines,autogobble,linenos,numbersep=3mm},
+left=5mm,enhanced,
+title=#1, fonttitle=\bfseries,
+listing engine=minted,minted language=xml}
+
+\newtcblisting{myhtml}[1]{colback=codecolor!5,colframe=codecolor!80!black,listing only, 
+minted options={numbers=left, style=tcblatex,fontsize=\tiny,breaklines,autogobble,linenos,numbersep=3mm},
+left=5mm,enhanced,
+title=#1, fonttitle=\bfseries,
+listing engine=minted,minted language=html}
+
+\newtcblisting{mycss}[1]{colback=codecolor!5,colframe=codecolor!80!black,listing only, 
+minted options={numbers=left, style=tcblatex,fontsize=\tiny,breaklines,autogobble,linenos,numbersep=3mm},
+left=5mm,enhanced,
+title=#1, fonttitle=\bfseries,
+listing engine=minted,minted language=css}
+
+
+\newtcblisting{myjs}[1]{colback=codecolor!5,colframe=codecolor!80!black,listing only, 
+minted options={numbers=left, style=tcblatex,fontsize=\tiny,breaklines,autogobble,linenos,numbersep=3mm},
+left=5mm,enhanced,
+title=#1, fonttitle=\bfseries,
+listing engine=minted,minted language=js}
+
+
+
+%------------------------------------------------------
+
+
+
+\definecolor{bgcolour}{rgb}{0.95,0.95,0.95}
+\newminted{sql}{fontsize=\footnotesize, 
+                   linenos,
+                   %fontfamily=fi4, 
+                   numbersep=6pt,
+                   autogobble,
+                   %frame=lines,
+                   bgcolor=black!8,
+                   framesep=3mm} 
+
+%\usemintedstyle[shell-session]{vim} %  vim monokai fruity native
+% color=black!80
+\newminted{shell-session}{fontsize=\scriptsize,numbersep=6pt,bgcolor=black!70,autogobble,framesep=3mm%  %frame=lines, %fontfamily=fi4, 
+                   }                    
+                   
+\newminted{sparql}{fontsize=\scriptsize, 
+                   %linenos,
+                   %fontfamily=fi4, 
+                   numbersep=6pt,
+                   autogobble,
+                   %frame=lines,
+                   bgcolor=black!8,
+                   framesep=3mm} 
+                   
+\newminted{turtle}{fontsize=\scriptsize, 
+                   %linenos,
+                   %fontfamily=fi4, 
+                   numbersep=6pt,
+                   autogobble,
+                   %frame=lines,
+                   bgcolor=black!8,
+                   framesep=3mm} 
+                   
+\newminted{js}{fontsize=\scriptsize, 
+                   linenos,
+                   %fontfamily=fi4, 
+                   numbersep=6pt,
+                   autogobble,
+                   %frame=lines,
+                   bgcolor=black!8,
+                   framesep=3mm}                    
+
+\newminted{xml}{fontsize=\scriptsize, 
+                   %linenos,
+                   %fontfamily=fi4, 
+                   numbersep=6pt,
+                   autogobble,
+                   %frame=lines,
+                   bgcolor=black!8,
+                   framesep=3mm} 
+                   
+\newminted{tex}{fontsize=\scriptsize, 
+                   %linenos,
+                   %fontfamily=fi4, 
+                   numbersep=6pt,
+                   autogobble,
+                   %frame=lines,
+                   bgcolor=black!8,
+                   framesep=3mm} 
+                   
+\newminted{postscript}{fontsize=\scriptsize, 
+                   %linenos,
+                   %fontfamily=fi4, 
+                   numbersep=6pt,
+                   autogobble,
+                   %frame=lines,
+                   bgcolor=black!8,
+                   framesep=3mm} 
+                   
+\newminted{html}{fontsize=\scriptsize, 
+                   %linenos,
+                   %fontfamily=fi4, 
+                   numbersep=6pt,
+                   autogobble,
+                   %frame=lines,
+                   bgcolor=black!8,
+                   framesep=3mm} 
+                   
+\newminted{css}{fontsize=\scriptsize, 
+                   %linenos,
+                   %fontfamily=fi4, 
+                   numbersep=6pt,
+                   autogobble,
+                   %frame=lines,
+                   bgcolor=black!8,
+                   framesep=3mm} 
+                   
+
+%-------------------------------  
+% https://tex.stackexchange.com/questions/377777/why-do-my-beamer-blocks-without-title-still-have-a-background
+\usepackage{xstring}                
+\setbeamertemplate{block begin}
+{
+  \par\vskip\medskipamount%
+  \IfStrEq{\insertblocktitle}{}{}{
+      \begin{beamercolorbox}[colsep*=.75ex]{block title}
+        \usebeamerfont*{block title}\insertblocktitle%
+      \end{beamercolorbox}%
+  }
+  {\parskip0pt\par}%
+  \ifbeamercolorempty[bg]{block title}
+  {}
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+}
+%-------------------------------  
+

@@ -1,0 +1,298 @@
+
+
+\begin{frame}[fragile]{Keyboard Shortcuts}
+    
+\begin{itemize}
+    \item Repetitive tasks are computer tasks
+    \item Oxygen: Ctrl-F $\to$ select „regular expression“
+    \item Mark up all words
+    \begin{enumerate}
+        \item Search for: \verb|\b(\w+)\b|
+        \item Replace with \verb|<w>$1</w>|
+    \end{enumerate}
+    \item Mark up all lines
+    \begin{enumerate}
+        \item Search for \verb|\s{20}([\S].*?)\n|
+        \item Replace with \verb|<l>$1</l>\n|
+    \end{enumerate}
+\end{itemize}
+$\to$ Regular Expressions are cool!
+\end{frame}
+
+%----------------------------------------------
+
+\begin{frame}{Regular expressions (RegEx)}
+  test  
+\end{frame}
+
+
+
+
+
+%---------------------------------------------
+\section{Regex/ Annotationspraxis}
+\begin{frame}[allowframebreaks]{Hands-On gezielte Annotation}
+\bg{alert}{white}{= Annotation mit dem Ziel der Erschließung}\\ 
+\bg{w3schools}{white}{Vorgehensweise}
+\smallskip 
+
+ \footnotesize
+\begin{enumerate}
+    \item Forschungsfrage formulieren
+    \item Überlegen, welche Daten zur Beantwortung benötigt werden
+    \item Begründen, warum und wie diese Daten zur Beantwortung beitragen
+    \item gezielt zu erschließende Quelle / Objekt (kann auch ein Gegenstand sein!) annotieren
+\end{enumerate}
+
+Dazu ist (wahrscheinlich) \bg{alert}{white}{Vorbereitung} notwendig:\\[0.5em]
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Beschaffung der Daten}
+
+\begin{enumerate}
+    \item Woher kann ich die Daten bekommen? 
+    \item Online in welcher Form (xml, html, txt, etc.) verfügbar?
+    \item Falls ja: darf ich die Daten (für meine Zwecke) überhaupt verwenden? (Urheberrecht, Creative Commons, etc.)
+    \item selbst digitalisieren / transkribieren
+    \item gezielt zu erschließende Quelle / Objekt (kann auch ein Gegenstand sein!) annotieren
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Sog. Pre-Processing}
+
+ Kann je nach Daten und Bedürfnisse ganz unterschiedlich aussehen. \\
+ 
+\begin{enumerate}
+    \item `Junk' / `Noise', der entfernt werden soll? (Zeichen aus dem HTML, kaputtes Encoding, irrelevante Daten, etc.)
+    \item Basis-Kodierung könnte man unter Pre-Processing fassen (Überschriften, Absätze)
+    \item Können Tätigkeiten automatisiert werden? Gibt es die Ressource schon online im richtigen Format?
+    \item Aber Achtung, übermotiviertes Automatisieren kann in Mehrarbeit enden!
+    \item Überprüfen, ob die `Vereinfachung' tatsächlich das gewünschte Ergebnis erzielt!
+    \item Falls Online-Markup nicht passt: Evtl. ist es mit einem plain text Dokument im Endeffekt schneller. 
+    \item Advanced: Automatisierung / Pre-Processing mit Python, XSLT, etc.
+\end{enumerate}
+
+\end{frame}
+%----------------------------------
+
+\begin{frame}[allowframebreaks]{Annotation leichter machen}
+\footnotesize
+\begin{enumerate}
+    \item beim Annotieren nicht `lesen', für das Grobe nur überfliegen
+    \item erst das Grobe (ohne zu lesen), dann eine 2. Runde für Details (\emph{Named Entities}, etc.)
+    \item Keyboard-Shortcuts nutzen: per Tastatur navigieren lernen statt `herumklicken'
+    \item Suchen \& Ersetzen für häufige Orte / Namen
+    \item Patterns automatisch finden (RegEx, Suchen/Ersetzen)
+    \item vielleicht gibt es die Daten schon online??
+\end{enumerate}
+\smallskip
+
+Wir könnten alles in Word mit Formatvorlagen annotieren und per OxGarage umwandeln. Allerdings muss dort (bis auf Absätze) alles händisch markiert werden. Suchen \& Ersetzen wäre da wohl effizienter.
+
+\begin{enumerate}
+    \item \textbf{Basiskodierung I:} Daten aus Wikisource rauskopieren in Word. Alles markieren (Strg+A) und auf Formatvorlage `Standard' klicken. Testen, ob es wirklich übernommen wurde. Im Word dann mit ``Überschrift''-Formatvorlage die Kapitelüberschriften markieren. Würde auch mit Markdown schnell gehen. 
+    (z.B. jedes `Chapter' durch `\# Chapter' ersetzen $\to$ in OxGarage zu TEI machen lassen, dann sind die \textbf{heads} schon drin (Achtung, dazu muss man das \texttt{.txt} in eine \texttt{.md}-Endung umbenennen, sonst wird es nicht akzeptiert.
+    \item \textbf{Transformation zu XML} / TEI mithilfe von \href{http://oxgarage.tei-c.org}{OxGarage}.
+    \item \textbf{Tipp:} Wenn ein Schema (z.B. TEI) mit dem Dokument verbunden ist, einfach öffnende Spitzklammer an eine Stelle schreiben und Oxygen bietet an, was dort stehen könnte (z.B. beim Header nützlich). Geht auch für Attribute, aber geht natürlich nur, wenn man mit dem Internet verbunden ist. Wenn man z.B. <p schreibt, dann zeigt es alle hier möglichen Elementnamen beginnend mit p, falls man schon ungefähr weiß, dass man z.B. eine Person sucht, die so benannt sein könnte.
+    \item \textbf{Suchen \& Ersetzen nutzen,} um häufige Orte und Personennamen `mit einem Schlag' zu annotieren. Sicherstellen, dass man nicht Dinge markiert, die keine eigentlichen Treffer waren (\emph{false positives}): Zunächst ein paar Ergebnisse durchklicken, bevor man `Alles ersetzen' macht. Vor Namen sicherheitshalber ein Leerzeichen setzen, damit nicht gleiche Wortteile mitgenommen werden (z.B. bei Mina durchaus möglich). Wenn Leute mit Vor- und Nachnamen vorkommen, immer zuerst die längstmögliche Version suchen, dann z.B. auch den Vornamen ohne Nachnamen. Allgemein, auch wenn man Suchen \& Ersetzen zum Bereinigen unerwünschter Attribute verwendet, immer zuerst das längstmögliche, dann die kürzeren Varianten. Beim `Bereinigen' schauen, ob man die unerwünschten Attribute nicht eh vielleicht brauchen kann (\emph{<hi style="bold">} könnte z.B. \emph{<hi rend="Name">} werden). (Für RegEx-Experten: XSLT / oXygen unterstützt nicht alle RegEx, die ihr evtl. aus anderen Programmiersprachen kennt -- hier sorgfältig googeln: Falls es den Eindruck macht, dass der gewünschte Ausdruck nicht explizit irgendwo als XSLT-tauglich ausgewiesen wird, davon ausgehen, dass es ihn nicht gibt. Mangelnde Bereitschaft zur Akzeptanz dieses Umstands kann in stundenlanger erfolgloser Fehlersuche enden \faSmileO )
+    \item Text durchgehen auf \emph{Named Entities} (Namen, Orte), die nicht automatisch gefunden wurden. Per Hand nachziehen.
+\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}[allowframebreaks]{Vorgehensweise zur Basiskodierung}
+\footnotesize
+\begin{enumerate}
+    \item Annotation mit Word-Formatvorlagen und OxGarage-Konversion
+    \item XML selbst schreiben mit Tastatur-Shortcuts
+    \item im Internet vor-kodierten Text suchen / aus XHTML transformieren, etc. (funktionierte hier nicht so gut)
+\end{enumerate}
+\smallskip
+
+\bg{alert}{white}{Dateien}~sinnvolle, aussagekräftige Dateinamen. Keine Leerzeichen in Dateinamen, keine Umlaute. Möglichst plattformunabhängige Dateiformate wählen.
+
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Basis-Kodierung}
+
+\begin{enumerate}
+    \item \textbf{Überschriften} (\emph{head}) und \textbf{Paragraphen} (\emph{p})
+    \item händisch erstellter, \textbf{minimaler TEI-Header}
+    \item \textbf{Personennamen, Orte} (mindestens direkte Verwendung, Verweise wie `er' optional)
+    \item \textbf{direkte Reden mit eindeutigem Attribut} (\emph{listPerson} im \emph{teiHeader}), das angibt, wer hier spricht
+    \item \textbf{Briefe} (ganzer Brief, als Unter-Verschachtelung: Absender, Empfänger, Ort, Datum nach TEI)
+\end{enumerate}
+
+\bg{alert}{white}{TEI-Header}
+\begin{enumerate}
+    \item \textbf{fileDesc} ist verpflichtend, hier einfach die Autorschaft (ihr selbst und z.B. Bram Stoker) klarstellen und ggf. erklären
+    \item dann in der \textbf{profileDesc}: \textbf{listPerson} $\to$ \textbf{person} (mit Attribut xml:id="Mina" oder so)  $\to$ persName, evtl mit Untergliederung darunter nochmals in Vor-, Nach- und Spitzname. Für alle Hauptfiguren. TEI-Konventionen: \href{http://www.tei-c.org/release/doc/tei-p5-doc/de/html/examples-addName.html}{addName} type="nick" für Spitznamen, \textbf{roleName} für Graf, Doktor etc.
+    \item im Text Personen dann mit \texttt{<persName ref="\#Mina">} referenzieren (selbes entsprechend bei Orten)
+    \item Liste der wichtigsten Orte: \textbf{profileDesc} $\to$ \textbf{settingDesc} $\to$ \textbf{listPlace}: \texttt{<place xml:id="London"  ana="http://www.geonames.org/2643741/"> <placeName> London} etc.
+    \item im Text: \texttt{<placeName ref="\#London">London</placeName>}
+\end{enumerate}
+
+\end{frame}
+
+%-----------------------------------------------------
+%
+
+
+\begin{frame}[standout]
+  \alert{Und Action!} \normalsize
+ Erstellt einen TEI-Header für Euer Dokument.
+\end{frame}
+
+
+%---------------------------------------------
+\begin{multibox}{2} % Anzahl der Boxen in einer Reihe angeben
+\begin{subbox}{subbox}{Tastatur-Shortcuts}\footnotesize
+
+\mycommand{STRG+C}{copy}
+\mycommand{STRG+Z}{undo}
+\mycommand{STRG+Y}{redo}
+\mycommand{STRG+A}{alles}
+\mycommand{STRG+S}{save}
+
+\mycommand{Alt+Tab}{zw. Anwendungen springen}
+\mycommand{Strg+Tab}{zw. Tabs springen}
+\mycommand{F5}{Browser-Refresh}
+
+\end{subbox}
+\begin{subbox}{customcolor}{Tastatur-Shortcuts}\footnotesize
+
+\mycommand{STRG+Pfeiltasten}{in Sprüngen navigieren}
+\mycommand{STRG+SHIFT+Pfeiltasten}{in Sprüngen markieren)}
+\mycommand{STRG+SHIFT+e}{Element (<oXygen/>)}
+
+\end{subbox}
+\end{multibox}
+
+\begin{frame}[fragile,allowframebreaks]{RegEx}
+\footnotesize
+
+\href{http://regexr.com}{RegExr.com}: vorher testen (potentielle Probleme z.B. = entweder alles oder nichts finden).
+Auch ein RegEx ist ein Modell $\to$ Abstraktion. z.B. \textbf{Jahreszahl finden} \verb|\d{4}|
+\smallskip
+
+\textbf{Ein Wort finden, das auch als Wortteil woanders vorkommen kann}, z.B. `bat': Suche von \verb|bat(\W)|. D.h. die Zeichenkette beginnt mit `bat' und es folgt ein Nicht-Wortzeiten (also Space, Punkt, Komma, Hyphen, etc.). \verb|\w| gibt ein `Wortzeichen', also Buchstaben, der Ausdruck in Groß jeweils das Gegenteil -- also alles, was durch \verb|\w| \emph{nicht} erfasst wird.
+Das ganze kann man natürlich auch an den Wortanfang noch setzen, um auf Nummer sicher zu gehen: \verb|(\W)bat(\W)|
+\smallskip
+
+Reguläre Ausdrücke (Regular Expressions, Regex) = Muster, die Zeichenketten beschreiben. 
+$\to$ Finden und Bearbeiten von Zeichenfolgen, die auf sie zutreffen.
+
+\begin{multibox}{2} % Anzahl der Boxen in einer Reihe angeben
+\begin{subbox}{subbox}{nachgestellt}\footnotesize
+
+\mycommand{nichts}{genau 1x}
+\mycommand{?}{1x oder kein Mal}
+\mycommand{*}{beliebig oft}
+\mycommand{+}{mind. 1x}
+\mycommand{{n}}{n-mal}
+
+\end{subbox}
+\begin{subbox}{customcolor}{Auswahl}\footnotesize
+
+\mycommand{.}{beliebiges Zeichen}
+
+\mycommand{[abc]}{Zeichenauswahl}
+\mycommand{[a-z][0-9]}{Auswahl}
+\mycommand{\n}{Zeilenumbruch}
+
+\end{subbox}
+\end{multibox}
+
+%---------------------------------------------
+\begin{multibox}{2} % Anzahl der Boxen in einer Reihe angeben
+\begin{subbox}{subbox}{Gruppieren}\footnotesize
+
+\mycommand{()}{zur Gruppierung und Anwahl (\$1)}
+\mycommand{(.*?)}{beliebig (non-greedy)}
+
+
+\mycommand{^}{negiert Folgendes}
+\mycommand{^}{Start eines Strings}
+\mycommand{\$}{String-Ende}
+\mycommand{\\}{Escape-Sequenz}
+\mycommand{|}{Oder-Pipe}
+\end{subbox}
+\begin{subbox}{subbox}{RegEx}\footnotesize
+\mycommand{\s}{\emph{space}: Leerzeichen, Tab, Zeilenumbruch}
+\mycommand{\d}{Zahl (\emph{digit}}
+\mycommand{\w}{Wort (=Buchst.,Zahl, Unterstrich}
+\mycommand{\D \W \S}{jeweils das Gegenteil wie in klein}
+
+\end{subbox}
+\end{multibox}
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile,allowframebreaks]{Reguläre Ausdrücke (RegEX)}
+\footnotesize
+\bg{w3schools}{white}{Vorbereiten}\\
+Als erstes: Ein Leerzeichen markieren und durch ein Leerzeichen ersetzen. Dies verhindert Encoding-Probleme (z.B. Windows hat `geschützte Leerzeichen', die im Hintergrund für den Computer anders aussehen. Diese können unerklärliche Fehler verursachen, daher lieber gleich am Anfang präventiv erledigen und die Fehlerquelle damit ausschließen.
+\medskip
+
+
+\bg{w3schools}{white}{Personen und Orte}\\
+\textbf{Suchen und Ersetzen in Oxygen:} Im OxygenXML-Suchfeld `Reguläre Ausdrücke' und alles drunter anklicken.
+
+Im oberen Suche-Feld:
+\begin{verbatim}
+    ( Mina|Mina Murray|Mina Harker)
+\end{verbatim}
+
+Im Ersetzen-Feld greifen wir auf die Inhalte aus der Klammer folgendermaßen zu (mit \$, das durchnummeriert wird, denn man kann mehrere Ausdrücke klammern und somit unterschiedlich weriterverarbeiten (z.B. Vor- und Nachname bereits richtig kodieren mit (Mina)(Murray|Harker), der Vorname ist dann in \$1, der Nachname in \$2 wiederzufinden):
+\begin{verbatim}
+    <persName ref="#Mina">$1</persName>
+\end{verbatim}
+
+Selbes für Ort:
+\begin{verbatim}
+    <placeName ref="#London">$1</placeName>
+\end{verbatim}
+
+Hier nicht vergessen, dass im Text immer vor der id der \# sein muss, sonst kommt vom TEI-Schema ein Fehler gemeldet.
+
+\medskip
+
+\bg{w3schools}{white}{Kapitelstruktur}\\
+Im oberen Suche-Feld:
+\begin{verbatim}
+    <p>(Letter|Chapter) (.*?)</p>
+\end{verbatim}
+
+Im Ersetzen-Feld greifen wir auf die Inhalte aus der Klammer folgendermaßen zu (mit \$):
+\begin{verbatim}
+    <head>$1 $2</head>
+\end{verbatim}
+
+Hinterher muss man um die heads (also immer beginnend vor head markieren bis kurz vor dem folgenden head, d.h. Ende Kapitel) markieren, Strg+E und ein div-Element erstellen für jedes Kapitel. Sonst nicht TEI-konform (gäbe auch komplexe Abfragen, mit denen dies automatisiert werden könnte).
+\medskip
+
+\bg{w3schools}{white}{Unerwünschte Zeilenumbrüche loswerden}\\
+Z.B. bei den Projekt-Gutenberg-txt-Dateien ist es uns passiert, dass unerwünschte Zeilenumbrüche im Text waren, die ohne RegEx nicht so einfach zu entfernen waren. Der RegEx, der das Problem löst, schaut folgendermaßen aus:
+\begin{verbatim}
+    (\w+)(\n)(\w+)
+\end{verbatim}
+D.h. er sucht ein oder mehrere Wörter, wo genau 1 Zeilenumbrucht (\textbackslash n = newline) dazwischen steht. Die Logik dahinter: richtige Absätze werden durch mehrere Zeilenumbrüche abgebildet (bei einer Leerzeile zw. zwei Abschnitten finden sich mind. 2 newline-Zeichen, also 1x am Ende der letzten Zeile und 1x nach der Leerzeile, dort sind aber keine Wort-Zeichen dazwischen. Wir löschen also tatsächlich nur unerwünschte / überflüssige  Umbrüche. Hier aber auch sichergehen, dass der Text tatsächlich so `funktioniert' -- wenn keine Leerzeilen zwischen Abschnitten sind, so funktioniert das nicht!
+
+\end{frame}
+%---------------------------------------------------
+
+
+
+\begin{frame}[allowframebreaks]{Literatur}
+
+\AtNextBibliography{\footnotesize}
+\printbibliography  
+\end{frame}

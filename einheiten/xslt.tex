@@ -1,0 +1,737 @@
+%-----------------------------------------
+\section{XML transformations using XSLT}
+
+\begin{frame}{Finally: Beyond TEI!}
+    \metroset{block=fill}
+    Why are we doing this workshop? The motivation from our abstract:
+    \begin{itemize}
+        \item[\textcolor{w3schools}{\faHandORight}] While it is an \textbf{ideal format for archiving digital data}, it is \alert{less than ideal for viewing and interacting with the edited text.}
+        \item[\textcolor{w3schools}{\faHandORight}] The data transformation language XSLT allows editors to create multiple representations from their data encoded in XML, enabling the creation of both digital and print editions. 
+    \end{itemize}
+    
+    \begin{block}{Goals for the next session}
+    \begin{enumerate}
+        \item[\textcolor{w3schools}{\faHandORight}] Navigating XML using XPath
+        \item[\textcolor{alert}{\faClose}] What is XSLT?
+        \item[\textcolor{alert}{\faClose}] Setting up a transformation scenario
+        \item[\textcolor{alert}{\faClose}] Creating different representations from our data using XSLT
+        \begin{itemize}
+            \item HTML (\& Bootstrap)
+            \item \LaTeX{} (\& \texttt{reledmac})
+        \end{itemize}
+    \end{enumerate}
+
+    \end{block}
+\end{frame}
+
+
+%-----------------------------------------
+\begin{frame}[fragile,allowframebreaks]{What is XSLT?}
+\small 
+\bg{alert}{white}{XSL (\emph{eXtensible Stylesheet Language})} is a programming language for transforming XML data. This allows for the storage of presentation-independent base data from which different representations can be generated (i.e. structure information for HTML).
+
+This is called the \bg{w3schools}{white}{\emph{single source principle}.}
+
+
+\bg{alert}{white}{XSLT (=XSL-Transformations)}
+is often used as a synonym but actually is only one part like \textbf{XSL-FO} (\emph{Formatting Objects} for describing print layouts in PDF; discontinued since 2012). 
+
+\bg{alert}{white}{XSLT} is made up of a set of processing rules (\emph{templates}) according to which an XML document is traversed and processed.
+The rules are being applied whenever one matches the current node/content. 
+
+\framebreak
+
+The parsing begins at the root node wich is why the first template is always this:
+\begin{xmlcode}
+<xsl:template match="/">...</xsl:template>
+\end{xmlcode}
+Here, you can build your output document structure before the rest of the processing begins. 
+
+If no matching template is encountered, built-in rules are used (printing the text content of elements and their children. You will encounter this as content just being dumped into your output unformatted (usually, you only want the \texttt{<body>} printed and not all metadata of the \texttt{<teiHeader>} in unstructured form. Thus you need to explicitly suppress this built-in behaviour. 
+
+$\to$ \textbf{In German:} \href{https://www.i-d-e.de/?s=referenz}{IDE Kurzreferenzen} \sep \textbf{In English:} \href{https://www.w3schools.com/xml/xsl_intro.asp}{W3Schools tutorial}
+
+\end{frame}
+
+%-----------------------------------------
+\begin{frame}[fragile]{XSLT output formats}
+\bg{alert}{white}{XSL(T): eXtensible Stylesheet Language (Transformations)}\\
+\bgupper{w3schools}{black}{.xsl} 
+
+\metroset{block=fill}\small
+\begin{columns}
+\column{0.3\textwidth}
+\begin{block}{An XSL stylesheet} is an XML document itself and describes rules for the transformation process of an input XML file (into one or multiple output formats).
+\end{block}
+\column{0.58\textwidth}
+\begin{block}{Output formats are, for example, \dots}
+\begin{itemize}\footnotesize
+    \item \textbf{(x)HTML} \item \textbf{XML} $\to$ e.g. Word, TEI and other XML standards, RDF, SVG \item \textbf{Text} $\to$ e.g. LaTeX ($\to$ PDF), RTF, MARC.
+\end{itemize}
+\end{block}
+\begin{block}{}
+\alert{Be careful!} \LaTeX{} is a lot like markup, too, but has different protected entities than XML and other conventions for `escaping' them:
+
+\LaTeX{} ampersand = \verb|\&| versus XML = \verb|&amp;|
+
+Use \texttt{xsl:output} and check for errors!
+\end{block}
+\end{columns}
+
+
+\end{frame}
+
+
+%-----------------------------------------
+\begin{frame}[fragile]{Getting started with XSL Transformations}
+\metroset{block=fill}\small
+Open an XML you want to transform \& a new XSL stylesheet in Oxygen. 
+
+\begin{columns}
+\column{0.55\textwidth}
+\begin{block}{Notice that\dots}
+\footnotesize
+\begin{enumerate}
+    \item It's empty (the \texttt{<stylesheet>} has only attributes). \item \texttt{<stylesheet>} has a \alert{namespace} (\texttt{<xsl:stylesheet>})
+\end{enumerate}
+\end{block}
+
+\begin{block}{}
+The auto-generated new \texttt{.xsl} document will look something like this:
+\begin{xmlcode}
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  exclude-result-prefixes="xs"
+  version="2.0">
+    
+</xsl:stylesheet>
+\end{xmlcode}
+\end{block}
+
+\column{0.42\textwidth}
+
+\begin{block}{Namespace}\footnotesize
+Namespaces are defined in \texttt{xmlns} attributes: 
+    \begin{itemize}\scriptsize
+        \item the link is the reference for the schema
+        \item after \texttt{xmlns:} is the shorthand for the namespace (\texttt{xsl}) 
+        \item later we will address TEI as \texttt{t:TEI}
+        \item this avoids mixups between the sometimes similar elements of HTML and TEI (\texttt{html:p} and \texttt{t:p}).
+        \item what you call the namespace doesn't matter (\texttt{tei:} or \texttt{t:} both work) $\to$ shorter is better as long as it's not confusing
+    \end{itemize}
+\end{block}
+
+\end{columns}
+
+\end{frame}
+
+
+%-----------------------------------------
+\begin{frame}[fragile]{Configuring the transformation scenario}
+Click into the XML file \& configure a transformation scenario (tool symbol):
+\begin{multicols}{2}
+\begin{enumerate}\footnotesize
+    \item Select `new' (XSLT transformation).
+    \item \textbf{XSLT tab: }
+    \begin{enumerate}\scriptsize
+        \item select XML file (probably already has the shorthand \verb|${currentFileURL}|)
+        \item select our new XSL file (needs to be saved)
+        \item (you can do mass-transformations using the project options)
+        \item select transformer: Saxon (any 9 version).
+    \end{enumerate}
+    \item \textbf{XSL-FO tab:} {\scriptsize Doesn't concern us $\to$ to create PDFs in a manner alternative to \LaTeX{} but not maintained since 2012}
+    \item \textbf{Output tab:} 
+    \begin{enumerate}\scriptsize
+        \item `Save as' $\to$ click green arrow, select \verb|${cfn}| (`current file name'). Then add \texttt{-transform.xml}, so our original file doesn't get overwritten. (Whenever you transform, the transformation result file will be overwritten -- avoid that by adding an ID / renaming it each time).
+        \item Pick `Open in editor' \& show as XML (if XML or HTML if HTML). Also say `open as XML' for \LaTeX{}: ignore the complaints that ensue \faSmileO 
+    \end{enumerate}
+    \item \textbf{Ok, then run it.} \scriptsize Now our -- as of yet empty -- new stylesheet (transformation) will be applied to the original file. 
+\end{enumerate}
+\end{multicols}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}[standout]
+    \alert{XSLT practice!} \\
+    \begin{enumerate}\small
+        \item Set up your transformation scenario and run it.
+        \item \alert{What do you notice?}
+        \item This is the standard behaviour of XSLT in the absence of matching  processing rules (templates).
+    \end{enumerate} 
+\end{frame}
+
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile,allowframebreaks]{standard transformation scenarios}
+\footnotesize\metroset{block=fill}
+
+With the last template, we indicated that we wanted the standard processing to be applied. This is just printing the text contents. 
+\alert{$\to$ the resulting document isn't actually XML anymore!} (it has no elements and no root)
+
+
+\begin{block}{Empty `match root' template (\texttt{<xsl:template match="/">})}
+\begin{xmlcode}
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0">
+       
+    <xsl:template match="/">
+        <!-- What happens now? -->
+    </xsl:template>
+    
+</xsl:stylesheet>
+\end{xmlcode}
+\end{block}
+
+\framebreak 
+
+\begin{block}{pushing the XML contents through the XSL tree using \texttt{apply-templates}}
+\begin{xmlcode}
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0">
+       
+    <xsl:template match="/">
+        <xsl:apply-templates/>
+    </xsl:template>
+    
+</xsl:stylesheet>
+\end{xmlcode}
+\end{block}
+
+\framebreak
+
+\begin{block}{`Hard code' structure into that root template}
+\begin{xmlcode}
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0">
+       
+    <xsl:template match="/">
+        <xml>
+            <xsl:apply-templates/> 
+        </xml>
+    </xsl:template>
+    
+</xsl:stylesheet>
+\end{xmlcode}
+ (i.e. type it in there)
+\end{block}
+\end{frame}
+
+%-----------------------------------------
+\begin{frame}[fragile]{Matching templates}
+\metroset{block=fill}\footnotesize
+\begin{columns}
+\column{0.48\textwidth}
+Instead of laboriously hardcoding everything, we can also define templates which always become active whenever a certain element (that they match as indicated by the \texttt{@match} attribute) is encountered.\smallskip
+
+\textbf{Read:} Whenever you find \texttt{<p/>}, do XY.
+
+We declare a `namespace' (\texttt{xmlns}) called \texttt{t:} so our TEI data gets recognized as such:
+\begin{xmlcode}
+xmlns:t="http://www.tei-c.org/ns/1.0"
+\end{xmlcode}
+When this line is present in the \texttt{<xsl:stylesheet>} root element, paths from our TEI file always need to have the prefix \texttt{t:}, e.g. \texttt{t:p}.\smallskip
+
+\textbf{Read:} \texttt{<p>} from the namespace with the shorthand \texttt{t:} as per the definition in the \texttt{<xsl:stylesheet>} root element.
+
+\column{0.48\textwidth}
+\begin{block}{processing/creating \texttt{<p>} elements in the output}
+\begin{xmlcode}
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:t="http://www.tei-c.org/ns/1.0"
+    exclude-result-prefixes="xs"
+    version="2.0">
+       
+    <xsl:template match="/">
+        <xml>
+            <xsl:apply-templates/> 
+        </xml>
+    </xsl:template>
+    
+    <xsl:template match="t:p">
+        <new>
+            <xsl:apply-templates/>
+        </new>
+    </xsl:template>
+    
+</xsl:stylesheet>
+\end{xmlcode}
+\end{block}
+\end{columns}
+
+\end{frame}
+
+%-----------------------------------------
+\begin{frame}[fragile,allowframebreaks]{XSLT processing paradigms}
+\footnotesize\metroset{block=fill} 
+All \texttt{p}, including their contents are preserved (thanks to \texttt{apply-templates}) but instead of \texttt{<p>} they are now called \texttt{<new>}  (just for demonstration purposes).
+
+This is referred to as the \bg{alert}{white}{ push paradigm}.
+
+You can see the \bg{alert}{white}{ pull paradigm} where the \texttt{<head>} is added. 
+We explicitly get the value of \texttt{<title>} to put in this element (careful about finding more titles than you wanted!
+
+
+\begin{exampleblock}{\texttt{value-of select=""} $\neq$ \texttt{apply-templates}}
+\begin{description}
+\item[apply-templates] will check for further processing rules deeper down the XSL hierarchy to match child elements of the current element.
+
+\item[value-of select=""] only copies/prints the current element content (not the node!), further nested elements are lost!
+
+\item[value-of select="."] gives you the current node's text content. 
+\end{description}
+\verb|attribute={@rend}| is a shorthand for attributes. 
+\end{exampleblock}
+
+\framebreak
+
+\begin{xmlcode}
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:t="http://www.tei-c.org/ns/1.0"
+    exclude-result-prefixes="xs"
+    version="2.0">
+       
+    <xsl:template match="/">
+        <xml>
+            <head><xsl:value-of select="//t:title"/></head>
+            <xsl:apply-templates/> 
+        </xml>
+    </xsl:template>
+    
+    <xsl:template match="t:p">
+        <new attribute={@rend}>
+            <xsl:apply-templates/>
+        </new>
+    </xsl:template>
+    
+</xsl:stylesheet>
+\end{xmlcode}
+
+\end{frame}
+
+%-----------------------------------------
+\begin{frame}[fragile]{Deleting contents}
+\small 
+
+\metroset{block=fill}
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{}
+\textbf{XSLT automatically prints all element values (contents) but we can delete them.} That way, we delete all elements, including their contents and child elements (!), from our output.
+
+\alert{$\to$ Don't accidentally write/save this on your original source data!} (Careful when setting up the transformation scenario to not name the output the same as the input XML.)
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{Delete consciously by creating an empty rule}
+\begin{xmlcode}
+    <xsl:template match="t:hi">
+        <!-- delete -->
+    </xsl:template>
+\end{xmlcode}
+\end{block}
+\end{columns}
+
+This is mostly all you need to know.
+
+Of course, there are more complicated functions for advanced usage. A few example are shown in the following.
+
+\end{frame}
+
+%-----------------------------------------
+\begin{frame}[fragile]{XSLT example: poem to HTML page}
+\begin{xmlcode}
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns="http://www.w3.org/1999/xhtml" version="2.0">
+    
+    <xsl:template match="/">
+        <html>
+            <head>
+                <title><xsl:value-of select="div/head" /></title>
+            </head>
+            <body><xsl:apply-templates select="div" /></body>
+        </html>
+    </xsl:template>
+    
+    <xsl:template match="div">
+        <h1><xsl:value-of select="head" /></h1>
+        <div><xsl:apply-templates select="lg" /></div>
+    </xsl:template>
+    
+    <xsl:template match="lg">
+        <p><xsl:apply-templates /></p>    
+    </xsl:template>
+    
+    <xsl:template match="l">
+        <xsl:value-of select="." /><br />
+    </xsl:template>
+</xsl:stylesheet>
+\end{xmlcode}
+\end{frame}
+
+%-----------------------------------------
+\begin{frame}[fragile,allowframebreaks]{More functionalities}
+\metroset{block=fill}\small
+\begin{block}{variables}
+\begin{xmlcode}
+<xsl:variable name="substitute" select="content">
+\end{xmlcode}
+XSLT handles variable with a so-called \emph{pass by value}, not \emph{by reference}. Ergo only the value is passed that the element has at the moment the variable is created. If I define it too early, I might get the wrong value! 
+\end{block} 
+
+\begin{block}{attributes}
+\texttt{<xsl:attribute>} is used to set attributes in the output document. It's not always necessary: Often you can use the shorthand \verb|type={@rend}|.
+\end{block} 
+
+\framebreak
+
+\begin{block}{\emph{plain text}}
+\texttt{<xsl:text>} puts the text as it is, i.e. won't put in unwanted spaces (like XSL tends to do which can be a problem in \LaTeX{} where space is significant. 
+
+XSL will be very liberal with spacing, unless you explicitly suppress this using \texttt{preserve-space}.
+\end{block} 
+
+\begin{block}{sorting}
+There is \texttt{<xsl:sort>} for sorting values.
+\end{block} 
+
+\begin{block}{conditions}
+\alert{\texttt{<xsl:choose>}} lets you choose a different way of processing according to a test using \alert{\texttt{<xsl:when>}}. \alert{\texttt{<xsl:if>}} only does something when a condition is met (i.e. if an element doesn't exist or has content XY). You should use this to check if optional elements exist to avoid errors!
+\end{block}
+
+\framebreak
+
+\begin{block}{Person list in HTML using \texttt{for-each}}
+\begin{xmlcode}
+<ul> <!-- unordered in HTML -->
+<xsl:for-each select="t:persName">
+    <li> <!-- list element -->
+    <xsl:value-of select="." />
+    </li>
+</xsl:for-each>
+</ul>
+\end{xmlcode}
+\end{block}
+
+\framebreak
+
+\begin{block}{Setting attributes}
+\begin{xmlcode}
+<xsl:for-each select="t:persName">
+    <span class={@rend}><xsl:value-of select="."></span>
+</xsl:for-each>
+<!-- OR -->
+
+<span>
+    <xsl:attribute name="id">
+        <xsl:value-of select="@rend"><xsl:text>-person</xsl:text>
+    <xsl:attribute>
+    <xsl:attribute name="interpretation">
+        <xsl:value-of select="concat(@rend,@ana)">
+    <xsl:attribute>
+    <xsl:apply-templates /> <!-- for the content -->
+<span>
+<!-- result e.g. 
+    <span id="monster-person" interpretation="monster-evil">
+    Weird Sisters </span> -->
+\end{xmlcode}
+\end{block}
+
+\begin{block}{For-each-group}
+\begin{xmlcode}
+
+<!-- could be sorted alphabetically.
+     use sparingly, can produce mysterious errors. -->
+
+<xsl:for-each-group select="bla" 
+  group-starting-with="dings[@rend="startbla]]"
+    <xsl:apply-templates select="current-group()">
+    <xsl:value-of select="current()/bla">
+</xsl:for-each-group>
+
+\end{xmlcode}
+\end{block}
+
+\begin{block}{Merging multiple documents with (\texttt{document()})}
+\begin{xmlcode}
+<xsl:apply-templates 
+  select="document('Letter1_TEI.xml')/tei:TEI//tei:body/tei:div"/>
+\end{xmlcode}
+\end{block}
+\end{frame}
+
+%----------------------------------
+\begin{frame}[fragile,allowframebreaks]{\emph{flow control} / conditions}
+\metroset{block=fill}
+
+
+\begin{block}{Loops: \texttt{for-each}}
+Example: Get each person (\texttt{//persName}) and generate a listing (\texttt{<ul>})of the last names (\texttt{lastname}):
+\begin{xmlcode}
+<ul>
+<xsl:for-each select="//persName">
+    <xsl:sort select="lastname" order="ascending" />
+    <li> <xsl:value-of select="lastname"/> </li>
+</xsl:for-each>
+</ul>
+\end{xmlcode}
+\end{block}
+
+\framebreak
+
+\begin{block}{Conditions I: if}
+\texttt{xsl:if} only runs if condition in \texttt{@test} evaluates as `true':
+\begin{xmlcode}
+<xsl:if test=" xpath-ausdruck "> ... </xsl:if>
+
+<xsl:for-each select="//book">
+    <xsl:if test=" author = 'Cicero' ">
+        <li><xsl:value-of select="title"/></li>
+    </xsl:if>
+</xsl:for-each>
+\end{xmlcode}
+\end{block}
+
+\framebreak
+
+\begin{block}{Conditions II: choose}
+You can also differentiate a number of cases:
+\begin{xmlcode}
+<xsl:choose>
+    <xsl:when test="some xpath"> ... </xsl:when>
+    <xsl:otherwise> ... </xsl:otherwise>
+</xsl:choose>
+\end{xmlcode}
+\end{block}
+
+You can also sort (\texttt{xsl:sort}), copy (\texttt{xsl:copy - xsl:copy-of}) and use variables. 
+
+\end{frame}
+
+%-----------------------------------------
+\begin{frame}[fragile]{XSL paradigms:  push}
+\metroset{block=fill}\footnotesize
+
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{push paradigm}
+\begin{xmlcode}
+<xsl:apply-templates select="path"/>
+\end{xmlcode}
+Suitable for processing the text body (mostly).\smallskip
+
+Elements are processed whereever they are encountered, you don't need to know their exact structure or order. The input document's structure is preserved (or not if defined otherwise in the template rules). Useful if keeping a similar document structure is the intended goal.
+
+\begin{xmlcode}
+<xsl:template match="/">
+    <xsl:apply-templates/>
+</xsl:template>
+\end{xmlcode}
+
+\end{block} 
+
+\column{0.48\textwidth}
+\begin{block}{ push processing}
+
+Call Template /  push method
+\begin{xmlcode}
+<xsl:template match="/">
+    <xsl:call-template name="etc">
+</xsl:template>
+
+<xsl:template name="etc">
+    ... do sth ...
+</xsl:template>
+\end{xmlcode}
+\end{block}
+
+\end{columns}
+
+\end{frame}
+
+
+%-----------------------------------------
+\begin{frame}[fragile,allowframebreaks]{XSL paradigms: pull}
+\metroset{block=fill}\footnotesize
+
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{pull paradigm}
+\begin{xmlcode}
+<xsl:call-templates name="etc"/>
+\end{xmlcode}
+
+Useful mainly for extracting metadata from the \texttt{<teiHeader>} to display them somehow. Also allows you to go over the whole document and create a list of persons mentioned in it, for example at the beginning of the output, using  \texttt{<xsl:for-each>}.\smallskip
+
+\texttt{<xsl:for-each>} and \texttt{<xsl:value-of select="">} are typical commands in the pull paradigm.
+
+\end{block} 
+
+\column{0.48\textwidth}
+\begin{block}{ pull processing}
+Pick some specific nodes with full control. Useful if the output document's structure should differ from the input quite a bit or you just want to selectively keep certain elements (like just make a list of dates mentioned in a document without printing the text of the original document). 
+
+\begin{xmlcode}
+<xsl:value-of select=''pattern''/>
+<xsl:apply-templates select=''pattern''/>
+<xsl:for-each select=''pattern''/>
+\end{xmlcode}
+\end{block}
+\end{columns}
+
+
+\end{frame}
+
+%-----------------------------------------
+\begin{frame}[fragile]{The paradigms in practice}
+\small
+
+\metroset{block=fill}
+\begin{columns}
+\column{0.48\textwidth}
+
+In practice, you will use a combination of both, maybe even for the same elements:
+\begin{itemize}
+    \item \textbf{pull}, e.g. 
+    \begin{itemize}\scriptsize
+        \item get the metadata from the header to create a recommended citation 
+        \item create a table of contents
+    \end{itemize}
+    \item \textbf{push}, e.g. 
+    \begin{itemize}\scriptsize
+        \item get (select) and process the document body automatically
+        \item process chapter headings inside the document body
+    \end{itemize}
+\end{itemize}
+
+\begin{xmlcode}
+<xsl:apply templates 
+  select="//t:body" />
+  
+<xsl:apply-templates 
+  select="head" mode="toc"/>
+\end{xmlcode}
+
+\column{0.48\textwidth}
+
+\begin{block}{\texttt{<xsl:template match="">}} 
+process the element where it appears.
+\end{block}
+
+\begin{block}{\texttt{<xsl:value-of select="">}}
+give me the element content as plain text/string (child elements and structure are lost).
+\end{block}
+
+\begin{block}{\texttt{<xsl:apply-templates>}}
+traverses the rules and it applies the rules for anything found in a \texttt{@match}. You always have to push the \texttt{apply-templates}) in each single template rule.
+\end{block}
+\end{columns}
+
+
+\end{frame}
+
+%------------------------
+\begin{frame}[fragile]{Facts}
+%\begin{block}{XSLT als Sprache} ist deklarativ (wie CSS nur mächtiger) und dynamically-typed, d.h. es arbeitet eher mit Werten als mit variables (wie JavaScript).\end{block} 
+
+\metroset{block=fill}
+\begin{block}{How to create your stylesheet}
+top down, starting with the root of the source document.
+Regelwerk nach Top-down-Prinzip, ausgehend vom
+Wurzelelement des Quelldokuments.
+
+\end{block} 
+
+\begin{block}{root element \texttt{xsl:stylesheet}}
+XSLT is XML istself which is why it has an all-encompassing root element where lots of parameters can be declared (namespaces, XSL processor, etc.) 
+\end{block}
+
+\end{frame}
+
+
+
+
+%------------------------------------------------------------------------------
+\begin{frame}[standout]
+    \alert{XSLT practice!} \\
+    \begin{enumerate}\small
+        \item Start with setting up your transformation scenario (see slides, cheatsheet and video).
+        \item Do the XSLT (prep) exercises on the exercise sheet if you haven't already done so (2.1). Do exercises 2.2 and 2.3.
+        \item Set up the transformation to run \texttt{mini-bootstrap.xsl} and/or \texttt{mini-latex.xsl} (using the \texttt{dracula.xml}) (see materials/resources folder)
+        \item Try to run it on your own data ( won't transfer properly), then adapt for your own data.
+    \end{enumerate} 
+\end{frame}
+
+
+%------------------------------------------------------------------------------
+\begin{frame}[standout]
+    \alert{XSLT to HTML practice!} \\
+    \small
+    First, try to configure a transformation scenario and get this to work at all (ideally on the \texttt{dracula.xml} first). Then try the following:
+    \begin{itemize}\small
+        \item \alert{Easy:} Write simple template rules for a few elements (where do they belong in the hierarchy?), copy how it's done from the existing rules. Read the info on the worksheet!
+        \item \alert{Harder:} Try to adapt the `Show persons' toggle and template match for TEI \texttt{placeName} to `Show places'.
+    \end{itemize} 
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}[standout]
+    \alert{If you're feeling adventurous (HTML):} \\
+    \small
+    First, try to configure a transformation scenario and get this to work at all (ideally on the \texttt{dracula.xml} first). Then try the following:
+    \begin{itemize}\small
+        \item Have a look at the \texttt{mini-bootstrap-popover.xsl}. Try to understand what's going on. 
+        \item The root template (\texttt{match="/"}) builds an HTML document and loads the Bootstrap framework. You can mostly ignore this for now. Start from the bottom where the \texttt{t:p} template is. 
+        \item The template is quite a bit longer than the other mini example but not too complicated. It implements the popover wippet by Roman Bleier which allows users to show expanded/abbreviated versions for \texttt{<expan>} and \texttt{<abbr>}.  
+        \item Try to add the infobox wippet (read the comments in the code) or look up other Bootstrap elements.
+    \end{itemize} 
+    Can you make the template work on your own data?
+\end{frame}
+
+
+%------------------------------------------------------------------------------
+\begin{frame}[standout]
+    \alert{XSLT to \LaTeX{} practice!} \\
+    \small
+    First, try to configure a transformation scenario and get this to work at all (ideally on the \texttt{dracula.xml} first). Then try the following:
+    \begin{itemize}\small
+        \item \alert{Easy:} Write simple template rules for a few elements (where do they belong in the hierarchy?), copy how it's done from the existing rules.
+        \item \alert{Harder:} Take a look at the next slide\dots
+    \end{itemize} 
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}[standout]
+    \alert{If you're feeling adventurous (\LaTeX{}):} \\
+    \small
+    First, try to configure a transformation scenario and get this to work at all (ideally on the \texttt{dracula.xml} first). Then try the following:
+    \begin{itemize}\small
+        \item Have a look at the \texttt{mini-latex-reledmac.xsl}. Try to understand what's going on \& configure a transformation scenario to use the template on your own data. 
+        \item The template is mostly a simplified version of the TEI Critical Apparatus Toolbox template but still complicated. Some templates are very long -- leave them alone!
+    \end{itemize} 
+    \alert{Remember:} This is your first day using XSLT. The template might be too difficult for now. If so, use it for practicing after the workshop. 
+\end{frame}
+
+
+% TODO XSLT: How to add your own templates? 
+% slides for each of the wippets: toogle, tooltip, msDesc, app/reledmac -> app unsichtbar machen bzw sichtbar machen durch checkbox-toggle-wippet
+
+
+
+

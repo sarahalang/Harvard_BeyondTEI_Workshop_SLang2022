@@ -1,0 +1,249 @@
+
+\section{Markup \& annotation}
+
+\begin{frame}[fragile]{Annotating in the Humanities}
+\small\metroset{block=fill}
+$\to$ Typical practice for the Humanities. Can be done on paper.
+
+\begin{columns}
+\column{0.48\textwidth}
+You can go about it in many ways:
+\begin{itemize}\footnotesize
+\item collect specific metadata to enrich your primary data with (research-driven modelling)
+\item provide metadata as general as possible to facilitate reuse (curation-driven modelling)
+\item we can provide administrative or technical metadata but also encode semantic information (implicit structures) for the machine.
+\item Often: describe logical structure of documents for computers (`This is a heading. This is a paragraph.')
+\end{itemize}
+
+Example: 
+\begin{xmlcode}
+<name type="person">J. W. v. Goethe</name>
+\end{xmlcode}
+
+\column{0.48\textwidth}
+\begin{block}{In the digital realm}\footnotesize
+Adding additional data to source document in a machine-readable format.
+\end{block} 
+\begin{block}{Formal models}\footnotesize
+If you model is machine-processable, it's a formal model -- i.e. markup creates a formal model of your data.
+\end{block}
+
+\begin{block}{Many names for the same thing}
+\footnotesize
+markup, encoding, annotating, \dots
+\end{block}
+\end{columns}
+
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}{Different levels of annotation}
+\metroset{block=fill}
+
+\bg{alert}{white}{Base annotation}
+Encode formal criteria of the text structure (i.e. headings, paragraphs), adding some metadata. Mostly \emph{presentational}.
+
+\bg{alert}{white}{Data enrichment}
+Going from formal aspects to semantics: Annotating personal names, places (\emph{Named Entities}), linking those to norm data, thus creating \emph{Linked (Open) Data} (LOD). 
+
+\begin{block}{Examples for norm data}
+\begin{itemize}\footnotesize
+\item \href{https://portal.dnb.de/opac.htm?method=simpleSearch&cqlMode=true&query=nid\%3D119287064}{GND} (\emph{Gemeinsame Normdatei}, Integrated Authority File)
+\item \href{https://www.geonames.org/}{GeoNames}
+\item \dots
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}[allowframebreaks]{Markup languages}
+Annotation is also called mark-up. 
+
+\begin{quote}
+\textbf{Markup} refers to data included in an electronic document which is distinct from the document's content in that it is typically not included in representations of the document for end users, for example on paper or a computer screen, or in an audio stream. \textbf{Markup is often used to control the display of the document or to enrich its content to facilitate automated processing.}\smallskip
+
+Older markup languages \punkti typically \textbf{focus on typography and presentation}, \punkti most modern markup languages, for example XML, \textbf{identify document components} (for example headings, paragraphs, and tables), with the expectation that technology such as stylesheets will be used to apply formatting or other processing.\smallskip
+
+Some markup languages, such as the widely used HTML, have \textbf{pre-defined presentation semantics}, meaning that their specification prescribes some aspects of how to present the structured data on particular media. (\href{https://en.wikipedia.org/wiki/Markup_language}{Wikipedia})
+\end{quote}
+
+\bg{alert}{white}{machine readable}\\
+\bg{w3schools}{white}{SMGL}~ \bg{w3schools}{white}{HTML}~ \bg{w3schools}{white}{XML}~ \bg{w3schools}{white}{\dots} \\
+\bg{alert}{white}{presentational vs. descriptive / semantic:} \\
+
+
+\begin{itemize}\footnotesize
+    \item e.g. `font size 14pt' vs. `heading' (=type). (explicit vs. implicit)
+    \item text formatting vs. meaning of the text 
+    \item procedural, representative, descriptive / conceptual (semantic)
+    \item WYSIWYG text processing  vs. WYSIWYM
+    \item Advantages of using macros in WS Word: change the settings once for the whole document
+    \item this is achieved when we separate content from its presentation
+    \item there are different `views' on markup documents
+    \item browser `renders' HTML: I can see it in two different ways -- rendered or as the HTML code
+\end{itemize}
+
+
+\begin{itemize}\footnotesize
+\item There are tools to switch documents between different types of markup! (not all formats work equally well): \textbf{\href{https://pandoc.org/}{Pandoc}} or \textbf{\href{http://oxgarage.tei-c.org}{OxGarage}} (for TEI mostly). 
+\item Binary document formats, such as  \emph{.doc, .pdf, .dvi} (\TeX{} output format) $\neq$ markup: You can tell by the fact that you cannot look at their `code view'. 
+\item A \texttt{.docx} file is a \texttt{.zip} archive (try unzipping it!) which contains XML files (but it's complicated).
+\item \textbf{Goal of markup:} Make the implicit (you know it's a heading) explicit for the computer (doesn't know otherwise).
+\end{itemize}
+\end{frame}
+
+
+%-------------------------------
+
+
+\section{Markup is all around you!}
+%---------------------------------------------
+\begin{frame}{\href{https://en.wikipedia.org/wiki/Standard_Generalized_Markup_Language}{SGML}}
+
+\textbf{Standard Generalized Markup Language}
+
+\bgupper{w3schools}{black}{.sgml}\\
+
+\bg{alert}{white}{Introduces the principles of}\\
+\bg{alert}{white}{the separation of form and content}\\
+\bg{alert}{white}{Is a metalanguage (like XML)} 
+
+
+HTML \& XML are both derived from the older SGML (thus the similarity) -- but HTML has a fixed tag set whereas XML is by definition \emph{extensible}.
+
+\end{frame}
+
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{\href{https://en.wikipedia.org/wiki/Rich_Text_Format}{RTF}}
+\small 
+\bg{alert}{white}{Rich Text Format}~
+Microsoft 1987 \sep exchange format between text editors (different operating systems, such as Mac and Windows, didn't create interchangeable  output formats).
+
+Unlike plain text, RTF contains markup for formatting text which can then be `retranslated' into the native editors.
+
+\bgupper{w3schools}{black}{.rtf}\\
+\footnotesize
+\begin{verbatim}
+{\rtf1
+Hello!
+\line
+{\i This} is \b{\i a
+\i0 formattted \b0text}.
+\par
+\b THE \b0END.
+} 
+\end{verbatim}\normalsize
+
+\end{frame}
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{\href{https://en.wikipedia.org/wiki/JSON}{JSON}}
+\footnotesize
+\bgupper{w3schools}{black}{.json}~ \bg{alert}{white}{JavaScript Object Notation}~ pronounced like `Jason' \sep compact data format \sep human readable \sep set up in key-value pairs \sep nested (like XML) \\
+
+\metroset{block=fill}
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{JSON vs. XML differences?}\scriptsize
+XML = describes structure, JSON = non-declarative syntax convention \sep JSON: defines instances of structured data \sep very flexible \sep `lightweight': little overhead, easier to read for data in key-value format \sep valid javascript: can be instantiated into a javascript object via the \verb|eval()| function.
+\end{block}
+
+\begin{block}{Conclusion}\scriptsize
+JSON has advantages if you just need simple key-value pairs (\textbf{`simplicity'}). XML has more and allows for more \textbf{complexity}.
+\bg{w3schools}{white}{XML = mark up language}~\\
+\bg{w3schools}{white}{JSON = data exchange format}~
+\end{block}
+
+\column{0.48\textwidth}
+\begin{jscode}
+{
+  "publisher": "Xema",
+  "number": "1234-5678-9012-3456",
+  "owner":
+  {
+    "Name": "Mustermann",
+    "Vorname": "Max",
+    "male": true,
+    "hobbies": ["surfing", "chess"],
+    "age": 42,
+    "kids": [],
+    "spouse": null
+  }
+}
+\end{jscode}
+\end{columns}
+
+
+\end{frame}
+
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{\href{https://en.wikipedia.org/wiki/PostScript}{PostScript}} \footnotesize
+\metroset{block=fill}
+\begin{columns}
+\column{0.48\textwidth}
+Page description language \sep 1980s (Adobe Systems) \sep vector graphic format for printers \sep but also: Turing-complete, stack-oriented  programming language \sep used to be the standard in the printing industry \sep today PDF (\emph{Portable Document Format}) (also by Adobe, developed from PS) has become the standard \sep could be generated via postscript printer drivers from all sorts of documents \sep processed via  `Ghostscript' in UNIX \sep decribes documents as scalable vector graphics which allows for loss-less zooming / scaling 
+~\bg{alert}{white}{.ps // presentational}\\[0.2em]
+
+\column{0.48\textwidth}
+\begin{block}{Example}
+This example program writes `Hello World!' to position 50,50. By default, the PS coorindate system starts from the bottom left corner. 
+\begin{postscriptcode}
+%!
+/Courier findfont    % font type
+20 scalefont         % font size 20 
+setfont              % set it
+50 50 moveto         % (50, 50) 
+                     % = writing pos
+(Hello World!) show  % print text
+showpage             % show page
+\end{postscriptcode}
+\end{block}
+\end{columns}
+
+\end{frame}
+
+
+%-----------------------------------------------------
+\begin{frame}[fragile]{\href{https://commonmark.org/help}{Markdown}}
+\begin{columns}
+\column{0.48\textwidth}
+
+\includegraphics[width=0.25\textwidth]{img/md.png}
+
+$\to$ \href{https://commonmark.org/help}{Markdown in 60s}
+
+simple text formatting 
+
+\bg{alert}{white}{.md // presentational}\\
+
+\column{0.48\textwidth}\footnotesize
+\mycommand{*Italic*}{\textit{Italic}}
+\mycommand{**Bold**}{\textbf{Bold}}
+\mycommand{# Heading 1}{Heading 1}
+\mycommand{## Heading 2}{etc.}
+\mycommand{[Link]{http://a.com}}{`hidden' link}
+\mycommand{![Image][http://url/a.png}{image}
+\mycommand{> Blockquote}{quote}
+\mycommand{- List}{list (can be nested, 2 spaces)}
+\mycommand{* List}{alternative list}
+\mycommand{1. enumerate}{numbered list}
+\mycommand{---}{separator line}
+\mycommand{`Inline code`}{Code (`backticks`)}
+\mycommand{```code block```}{code block}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}[standout]
+  \alert{Practice!} \\
+  Try \alert{\href{https://commonmark.org/help}{Markdown in 60s}} or 10min exercise
+\end{frame}
+
+
+
+
+

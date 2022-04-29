@@ -1,0 +1,129 @@
+\documentclass[10pt]{beamer}
+\input{CONFIG.tex}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage[normalem]{ulem} % for strikethrough
+
+
+\begin{document}
+ 
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{img/kfu-zim-slides.png}}
+\frame{\titlepage}
+}
+%\frame{\titlepage}
+\setcounter{tocdepth}{1}
+%------------------------------------------------------------------------------
+\begin{frame}{Overview}%\scriptsize
+  \setbeamertemplate{section in toc}[sections numbered]
+  \begin{small}
+  \begin{multicols}{2}\tableofcontents\end{multicols}
+  % on toc formatting:
+  % https://tex.stackexchange.com/questions/26929/two-column-beamer-toc-with-control-over-the-breaking-point
+  \end{small}
+\end{frame}
+
+ 
+\section{The workshop}
+
+\begin{frame}{Goals}
+\subsection{Goals}
+\begin{enumerate}
+    \item get to know XPath \& XSLT (and learn how to use it)
+    \item understand the role of XML/TEI, XPath and XSLT in Digital Editing
+    \item be able to use XSLT to generate HTML and \LaTeX{} output from TEI
+    \item \alert{Two days isn't enough for you to master XSLT!}
+\end{enumerate}
+
+\metroset{block=fill}
+\begin{alertblock}{Schedule}
+\footnotesize
+\begin{description}
+  \item[Day 1, morning] XML, TEI and Digital Editing $\to$ repetition of the basics, making sure we're all on the same page, understanding why we're even learning XSLT.
+  \item[Day 1, afternoon] Navigating XML documents using XPath, introduction to HTML (\& Bootstrap) and \LaTeX{} (\& \texttt{reledmac})
+  \item[Day 2] Transforming XML documents into HTML \& \LaTeX{} output formats using XSLT
+\end{description}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[standout]
+    Single point of entry for all workshop-related materials: 
+    \alert{\href{https://latex-ninja.com/2022/04/17/first-ever-latex-ninja-workshop-at-harvard-beyond-tei-digital-editions-with-xpath-and-xslt-for-the-web-and-in-latex/}{\LaTeX{} Ninja blogpost}} \& \alert{\href{https://github.com/sarahalang/Harvard_BeyondTEI_Workshop_SLang2022}{Github Repository}} (`additional resources' directory)
+\end{frame}
+
+
+\begin{frame}{Introductions}
+\subsection{Introductions}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.35\textwidth}
+      \begin{alertblock}{Please introduce yourselves!}
+      \footnotesize
+        \begin{enumerate}
+            \item Name, pronouns, field/topic of study
+            \item Why did you come to this workshop?
+            \item Previous experience with Digital Humanities (DH) or editing?
+        \end{enumerate}
+      \end{alertblock}
+
+ \metroset{block=fill}
+ { \setbeamersize{description width=1em}
+      \begin{block}{Contact} 
+      \begin{description}\scriptsize 
+        \item[\faTwitter] \href{https://twitter.com/SarahALang_}{@SarahALang\_} \\ \href{https://twitter.com/latex_ninja}{@latex\_ninja}
+        \item[\faHome] \protect\url{sarahalang.com} \\ \protect\url{latex-ninja.com}
+        \item[\faAt] \protect\url{sarah.lang@uni-graz.at}
+      \end{description}
+      \end{block}
+      }
+
+    \column{0.6\textwidth}
+      \metroset{block=fill}
+      \begin{block}{Sarah Lang (she/they)}
+      \scriptsize
+      \begin{itemize}
+          \item originally from Germany, now in Graz (Austria)
+          \item Studied Latin, French \& History (teacher's education) in Graz \& Montpellier (France), then Archaeology Bachelor, Master in Religious Studies \& Philosophy
+          \item got a DH certificate \& started working at Zentrum für Informationsmodellierung (ZIM) / Centre for Information Modelling in Graz
+          
+          \begin{itemize}\scriptsize
+              \item Moral Weeklies/Spectators $\to$ \protect\url{gams.uni-graz.at/mws}
+              \item Graz Repository of Ancient Fables (GRaF) $\to$ \protect\url{gams.uni-graz.at/graf}
+              \item \emph{PhD thesis:} Decoding alchemical \emph{Decknamen} digitally. A Polysemantic Annotation and Machine Reasoning Algorithm for the Corpus of Iatrochymist Michael Maier (1568--1622)
+          \end{itemize}
+          \item \emph{Now:} teaching in Graz, Passau \& Vienna; PostDoc in Graz. \emph{Research interests:} history of science (alchemy), Neo-Latin, text mining and computer vision
+      \end{itemize}
+      \end{block}
+  \end{columns}
+\end{frame}
+
+%-------------------------------------------------------
+
+% Teaser: Why are we here? General terms: digital edition and archive
+%\input{einheiten/tei-publication-solutions}\input{einheiten/digital-editing}\input{einheiten/digital-archives}
+
+% lead into XML and TEI
+\input{einheiten/xml-tei}
+%\input{einheiten/tei-for-digital-editing}
+
+% Practical annotation
+%\input{einheiten/annotation}\input{einheiten/datatypes-metadata-standards}
+%\input{einheiten/regex-annotation}
+
+
+% Relevant technologies introduction
+%\input{einheiten/html-bootstrap}
+%\input{einheiten/latex-reledmac}
+
+% get to XPath and XSLT
+%\input{einheiten/xpath}
+%\input{einheiten/xslt}
+
+
+%TODO in the future: Advanced XSLT for-each group, param, call template, variables
+%TODO maybe: Primar Schemata
+%TODO see leftover-text.tex
+
+%-------------------------------------------------------
+\frame[allowframebreaks]{\AtNextBibliography{\footnotesize}\printbibliography}
+
+\end{document}
