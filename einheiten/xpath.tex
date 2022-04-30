@@ -201,8 +201,8 @@ See exercise sheet.
 
 \scriptsize
 \begin{verbatim}
-1. //div[@type="chapter"]   -- count(//head)
-2. //head -- //div[@type='chapter']/head
+1. //div[@type="chapter"]             count(//head)
+2. //head          //div[@type='chapter']/head
 3. substring-after(//div[type=....],'Chapter')
 4. distinct-values(//placeName/@xml:id)  
   OR distinct-values(//placeName) 
@@ -215,7 +215,7 @@ $\to$ What's the difference?
 8. //div[@type="chapter"][@n="4"]/head  
   OR  //div[@type="chapter"][4]/head
 9. //persName[@ref != "#Mina"]  
-  OR \\persname[not(@ref='#Mina')] 
+  OR //persname[not(@ref='#Mina')] 
 10. //div[@type='chapter'][1]/persName | //div[@type='chapter'][1]/placeName 
 OR //person | //place
 \end{verbatim}
@@ -328,7 +328,7 @@ text node (\emph{value}) coming before the indicated \emph{substring}}
 \mycommand{concat(value1, value2, ...)}{concatenate}
 \mycommand{concat(surname, ', ', forename)}{e.g.}
 \mycommand{translate(target, string, replacement)}{replace}
-\mycommand{noramlize-space(target)}{removes trailing whitespace}
+\mycommand{normalize-space(target)}{removes trailing whitespace}
 
 \end{frame}
 

@@ -245,13 +245,14 @@ xml:id="trans2"> head on hands
 \end{itemize}
 
 \column{0.38\textwidth}
-\begin{block}{Unicodefor historical texts}\scriptsize
+\begin{block}{Unicode for historical texts}\scriptsize
 \begin{itemize}
 \item  \emph{Combining Diacritical Marks} (0300–036F) and \emph{Supplement} (1DC0–1DFF): Superscripts, Subscripts
 \item  \emph{Latin Extended Additional} (1E00–1EFF): characters with diacritics
 \item  \emph{Latin Extended-D} (A720–A7FF): Ligatures, abbreviations, \dots
 \item  \emph{General Punctuation} (2000–206F) and \emph{Supplement} (2E00–2E7F)%: \#\#Hochpunkte etc.
 \item  \emph{Ancient Symbols} (10190–101CF): roman measurements, coins\dots
+\item Search unicode entities: \protect\url{https://unicode-table.com/}
 \end{itemize}
 \end{block}
 \end{columns}
@@ -696,9 +697,9 @@ Encoding the „base text“ as the \texttt{lem} in the \texttt{app}-element. Ca
 \column{0.48\textwidth}
 \begin{block}{Which one to choose?}
 \begin{enumerate}\footnotesize
-    \item \textbf{Referenced} imitates the classical print version, is relatively fast to create but can be imprecise in referencing
-    \item \textbf{Double-Endpoint} is relatively complex to encode and to process, but exact and the only form to handle overlapping structures
-    \item \textbf{Parallel Segmentation} can be easily processed with XSLT but not very flexible in documenting complex changes and overlapping structures
+    \item \textbf{Referenced} imitates the classical print version, is relatively fast to create but can be imprecise in referencing.
+    \item \textbf{Double-Endpoint} is relatively complex to encode and to process, but exact and the only form to handle overlapping structures.
+    \item \textbf{Parallel Segmentation} can be easily processed with XSLT but not very flexible in documenting complex changes and overlapping structures.
 \end{enumerate}
 \end{block}
 \end{columns}

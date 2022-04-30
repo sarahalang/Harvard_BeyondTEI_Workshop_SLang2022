@@ -11,6 +11,9 @@ This workshop will give you a first overview of XPath and XSLT and how to use th
 
 This short workshop cannot make you an expert user. If you want to learn more, please consult available teaching materials.
 
+## LaTeX
+[Typesetting Historical Print blogpost](https://latex-ninja.com/2018/11/09/typesetting-historical-print/)
+
 ## English language teaching materials 
 For further English language teaching materials, please consider the great resources provided by DARIAH Teach.
 1. [Susan Schreibman & Roman Bleier: Text Encoding and the TEI](https://teach.dariah.eu/mod/page/view.php?id=197)
