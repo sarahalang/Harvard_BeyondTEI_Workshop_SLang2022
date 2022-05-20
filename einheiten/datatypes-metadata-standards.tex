@@ -451,11 +451,10 @@ i.e. \href{https://www.dublincore.org/specifications/dublin-core/usageguide/elem
 
 %---------------------------------------------
 
-
 \begin{frame}[fragile]{Metadata Encoding and Transmission Standard (METS)}
 \metroset{block=fill}
 \begin{columns}
-\column{0.58\textwidth}
+\column{0.55\textwidth}
 \begin{block}{METS}\footnotesize
 \begin{itemize}
 \item tool for encoding digital library objects
@@ -466,9 +465,10 @@ i.e. \href{https://www.dublincore.org/specifications/dublin-core/usageguide/elem
 \item relatively simple and straightforward
 \item supports a wide range of materials 
 \item \href{https://www.loc.gov/standards/mets/mets-present.html}{<website>} \& \href{https://www.loc.gov/standards/mets/presentations/METS.ppt}{more info here}
+\item DFG-Viewer: \protect\url{http://dfg-viewer.de/}
 \end{itemize}
 \end{block}
-\column{0.38\textwidth}
+\column{0.41\textwidth}\small 
 Only structural map is required.
 \begin{xmlcode}
 <mets>
@@ -481,8 +481,21 @@ Only structural map is required.
   <behaviorSec/>
 </mets>
 \end{xmlcode}
+
+%\protect\url{http://www.loc.gov/standards/mets/}
+
+\begin{block}{Goals}
+\begin{itemize}\scriptsize
+    \item link/summarize related metadata
+    \item e.g. link related images to text
+    \item organize data
+    \item provide usage metadata
+\end{itemize}
+\end{block}
+
 \end{columns}
 \end{frame}
+
 
 %---------------------------
 
@@ -813,3 +826,78 @@ This is achieved in RDF (can be written as XML) $\to$ RDF uses the Semantic Web 
 \end{xmlcode}
 
 \end{frame}
+
+
+
+%-----------------------------------------------------
+\begin{frame}{Internat. Image Interoperability Framework (read: \emph{Triple-I-F})}
+
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{IIIF}
+\begin{quote}
+    The International Image Interoperability Framework (\protect\url{https://iiif.io/}) defines several application programming interfaces that provide a standardised method of describing and delivering images over the web, as well as ``presentation based metadata'' about structured sequences of images. (\href{https://en.wikipedia.org/wiki/International_Image_Interoperability_Framework}{Wikipedia})
+\end{quote}
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{The standard}
+\begin{itemize}\footnotesize
+    \item proposed in 2011 
+    \item 2012: Version 1.0
+    \item \textbf{Image API:} URL for viewing the images
+    \item \textbf{Presentation API:} standard for describing a sequence of canvases and the images they are represented by as a representation of an object (\emph{manifest}, \texttt{manifest.json})
+\end{itemize}
+\end{block}
+\end{columns}
+
+ \includegraphics[width=0.7\textwidth]{img/iiif.png}
+
+\end{frame}
+%-----------------------------------------------------
+\begin{frame}{IIIF Image API}
+
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{region}\footnotesize
+defines the rectangular portion of the
+underlying image content to be returned
+\end{block}
+
+\begin{block}{size}\footnotesize
+determines the dimensions to which the
+extracted region is to be scaled
+\end{block}
+
+\begin{block}{rotation}\footnotesize
+ otation parameter specifies mirroring and rotation
+\end{block}
+\begin{block}{IIIF Presentation API}\footnotesize
+\href{https://jubilees.stmarytx.edu/mirador/index.html}{example 1}, 
+\href{https://jubilees.stmarytx.edu/iiifp/KB_Collin-36-III-082/manifest.json}{example 2}
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{quality}\footnotesize
+determines whether the image is delivered in
+color, grayscale or black and white (values: color, gray, bitonal, default)
+\end{block} 
+
+\begin{block}{format}\footnotesize
+format of the returned image (e.g. jpg, tif, gif, jp2, pdf, webp)
+\end{block} 
+
+\begin{block}{Mirador Web Viewer}\footnotesize
+Fully featured IIIF Viewer: \protect\url{https://projectmirador.org}
+\end{block}
+
+
+\end{columns}
+
+\includegraphics[width=0.9\textwidth]{img/iiif-image-api.png}
+\end{frame}
+
+
+%-----------------------------------------------------
+
+

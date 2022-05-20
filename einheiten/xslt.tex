@@ -460,7 +460,7 @@ There is \texttt{<xsl:sort>} for sorting values.
      use sparingly, can produce mysterious errors. -->
 
 <xsl:for-each-group select="bla" 
-  group-starting-with="dings[@rend="startbla]]"
+  group-starting-with="dings[@rend="startbla]"
     <xsl:apply-templates select="current-group()">
     <xsl:value-of select="current()/bla">
 </xsl:for-each-group>
@@ -653,8 +653,7 @@ traverses the rules and it applies the rules for anything found in a \texttt{@ma
 \metroset{block=fill}
 \begin{block}{How to create your stylesheet}
 top down, starting with the root of the source document.
-Regelwerk nach Top-down-Prinzip, ausgehend vom
-Wurzelelement des Quelldokuments.
+
 
 \end{block} 
 
